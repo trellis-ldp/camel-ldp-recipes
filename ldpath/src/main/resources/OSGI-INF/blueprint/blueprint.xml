@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+       xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.2.0"
+       xsi:schemaLocation="
+       http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.2.0 http://aries.apache.org/schemas/blueprint-ext/blueprint-ext-1.2.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+   <!-- system environment property placeholders -->
+	 <ext:property-placeholder placeholder-prefix="$[" placeholder-suffix="]"/>
+
+   <!-- OSGI blueprint property placeholder -->
+   <cm:property-placeholder id="properties" persistent-id="org.trellisldp.ldpath" update-strategy="reload">
+     <cm:default-properties>
+       <cm:property name="endpoint.prefix" value="/ldpath"/>
+       <cm:property name="endpoint.host" value="localhost"/>
+       <cm:property name="endpoint.port" value=""/>
+       <cm:property name="ldcache.timeout" value="86400"/>
+			 <cm:property name="ldcache.directory" value="$[karaf.data]/ldcache"/>
+       <cm:property name="ldpath.defaultProgram" value="language:simple:resource:classpath:org/trellisldp/ldpath/default.ldpath"/>
+     </cm:default-properties>
+   </cm:property-placeholder>
+
+  <bean id="cacheDir" class="java.io.File">
+    <argument value="${ldcache.directory}"/>
+  </bean>
+
+  <bean id="backend" class="org.apache.marmotta.ldcache.backend.file.LDCachingFileBackend" init-method="initialize" destroy-method="shutdown">
+    <argument ref="cacheDir"/>
+  </bean>
+
+  <bean id="config" class="org.apache.marmotta.ldcache.model.CacheConfiguration">
+    <property name="defaultExpiry" value="${ldcache.timeout}"/>
+  </bean>
+
+  <bean id="ldcache" class="org.apache.marmotta.ldcache.services.LDCache">
+    <argument ref="config"/>
+    <argument ref="backend"/>
+  </bean>
+
+  <bean id="ldcachebackend" class="org.apache.marmotta.ldpath.backend.linkeddata.LDCacheBackend">
+    <argument ref="ldcache"/>
+  </bean>
+
+	<bean id="ldpath" class="org.apache.marmotta.ldpath.api.LDPath">
+		<argument ref="ldcachebackend"/>
+	</bean>
+
+  <camelContext id="ldpathContext" depends-on="ldpath" xmlns="http://camel.apache.org/schema/blueprint">
+    <package>org.trellisldp.ldpath</package>
+
+    <route id="trellisLdpath">
+      <from uri="direct:programQuery"/>
+      <setBody>
+        <method ref="ldpath" method="programQuery(${headers.context}, ${body})"/>
+      </setBody>
+    </route>
+  </camelContext>
+</blueprint>

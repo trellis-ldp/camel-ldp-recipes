@@ -8,12 +8,24 @@ ext {
 }
 
 dependencies {
-    api("org.apache.marmotta:marmotta-ldpath:$marmottaVersion")
     api("org.apache.camel:camel-core:$camelVersion")
+    api("org.apache.marmotta:ldcache-api:$marmottaVersion")
+    api("org.apache.marmotta:ldpath-api:$marmottaVersion")
+    api("org.apache.marmotta:ldpath-backend-linkeddata:$marmottaVersion")
+    api("org.apache.marmotta:ldpath-core:$marmottaVersion")
 
+    implementation("org.apache.camel:camel-blueprint:$camelVersion")
+    implementation("org.apache.camel:camel-http4:$camelVersion")
+    implementation("org.apache.camel:camel-jackson:$camelVersion")
+    implementation("org.apache.camel:camel-jetty9:$camelVersion")
+    implementation("org.apache.marmotta:ldcache-backend-file:$marmottaVersion")
+    implementation("org.apache.marmotta:ldclient-provider-xml:$marmottaVersion")
+    implementation("org.apache.marmotta:ldclient-provider-rdf:$marmottaVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
+    testImplementation("org.apache.camel:camel-test-blueprint:$camelVersion")
     testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
 }
 
 jar {
@@ -24,7 +36,13 @@ jar {
         license project.license
 
         instruction 'Automatic-Module-Name', moduleName
-        instruction 'Import-Package', '*'
+        instruction 'Import-Package', '''\
+            org.apache.marmotta.ldcache.backend.file,
+            org.apache.marmotta.ldcache.model,
+            org.apache.marmotta.ldcache.services,
+            org.apache.marmotta.ldpath.api,
+            org.apache.marmotta.ldpath.backend.linkeddata,
+            *'''
         instruction 'Export-Package', "${moduleName};version=${projectOsgiVersion}"
     }
 }
