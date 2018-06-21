@@ -1,0 +1,334 @@
+plugins {
+    id 'com.github.hierynomus.license' version '0.14.0'
+    id 'com.github.ben-manes.versions' version '0.20.0'
+    id 'net.researchgate.release' version '2.7.0'
+    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'org.sonarqube' version '2.6.2'
+    id 'nebula.ospackage' version '4.9.3'
+    id 'org.owasp.dependencycheck' version '3.2.1'
+}
+
+ext {
+
+    /* Dependencies */
+    marmottaVersion = '3.4.0'
+    camelVersion = '2.21.1'
+    slf4jVersion = '1.7.25'
+
+    /* Testing */
+    apiguardianVersion = '1.0.0'
+    checkstyleVersion = '8.10'
+    jaxbVersion = '2.3.0'
+    jacocoVersion = '0.8.1'
+    junitPlatformVersion = '1.2.0'
+    junitVersion = '5.2.0'
+    logbackVersion = '1.2.3'
+    mockitoVersion = '2.19.0'
+
+    /* OSGi */
+    projectOsgiVersion = project.version.replaceAll("-SNAPSHOT", ".SNAPSHOT")
+}
+
+allprojects { subproj ->
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+    apply plugin: 'checkstyle'
+    apply plugin: 'com.github.hierynomus.license'
+    apply plugin: 'jacoco'
+
+    ext {
+        vendor = 'Trellis LDP'
+        homepage = 'https://www.trellisldp.org'
+        docURL = 'https://trellis-ldp.github.io/trellis/apidocs/'
+        license = 'Apache 2'
+    }
+
+    jacoco.toolVersion = jacocoVersion
+
+    group = 'org.trellisldp'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        mavenLocal()
+    }
+
+    dependencies {
+        testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+        testImplementation("org.apiguardian:apiguardian-api:${apiguardianVersion}")
+        testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    }
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+
+    release {
+        tagTemplate = '$name-$version'
+        git {
+            requireBranch = 'master'
+            signTag = true
+        }
+    }
+}
+
+subprojects { subproj ->
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    jar {
+        from("$rootDir/LICENSE") {
+            into "META-INF"
+        }
+    }
+
+    checkstyle {
+        configFile = rootProject.file('buildtools/src/main/resources/checkstyle/checkstyle.xml')
+        configProperties.checkstyleConfigDir = rootProject.file('buildtools/src/main/resources/checkstyle/')
+        toolVersion = checkstyleVersion
+    }
+
+    task javadocJar(type: Jar) {
+        classifier 'javadoc'
+        from("$rootDir/LICENSE") {
+            into "META-INF"
+        }
+        from javadoc
+    }
+
+    task sourceJar(type: Jar) {
+        classifier 'sources'
+        from("$rootDir/LICENSE") {
+            into "META-INF"
+        }
+        from sourceSets.main.allSource
+    }
+
+    task processConfig(type: Copy) {
+        from('src/main/cfg') {
+            include '**/*.cfg'
+        }
+        into 'build/cfg/main'
+    }
+
+    classes {
+        classes.dependsOn processConfig
+    }
+
+    artifacts {
+        archives javadocJar
+        archives sourceJar
+    }
+
+    license {
+        include "**/*.java"
+        header rootProject.file('buildtools/src/main/resources/license/HEADER.txt')
+        strictCheck true
+        mapping {
+            java = 'SLASHSTAR_STYLE'
+        }
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                pom {
+                    packaging = 'jar'
+                    name = 'Trellis Linked Data Integrations'
+                    description = 'Integration services for linked data applications'
+                    url = "https://www.trellisldp.org"
+                    inceptionYear = '2017'
+
+                    organization {
+                        name = project.vendor
+                        url = project.homepage
+                    }
+
+                    developers {
+                        developer {
+                            id = 'acoburn'
+                            name = 'Aaron Coburn'
+                            email = 'acoburn (at) apache (dot) org'
+                        }
+                    }
+
+                    scm {
+                        connection = 'scm:git:git://github.com/trellis-ldp/camel-ldp-recipes.git'
+                        developerConnection = 'scm:git:git@github.com/trellis-ldp/camel-ldp-recipes.git'
+                        url = 'https://github.com/trellis-ldp/camel-ldp-recipes'
+                        tag = 'HEAD'
+                    }
+
+                    licenses {
+                        license {
+                            name = 'Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0'
+                            comments = 'Copyright (c) 2017-2018 Trellis LDP'
+                        }
+                    }
+                }
+                pom.withXml {
+                    // eliminate test-scoped dependencies
+                    asNode().dependencies.removeAll { dep -> dep.scope == "test" }
+                }
+
+                from components.java
+
+                artifact(sourceJar) {
+                    classifier = 'sources'
+                }
+
+                artifact(javadocJar) {
+                    classifier = 'javadoc'
+                }
+            }
+        }
+        repositories {
+            maven {
+                def sonatypeUsername = project.hasProperty('ossrhUsername') ? ossrhUsername : ""
+                def sonatypePassword = project.hasProperty('ossrhPassword') ? ossrhPassword : ""
+                if (version.endsWith("SNAPSHOT")) {
+                    url "https://oss.sonatype.org/content/repositories/snapshots/"
+                } else {
+                    url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                }
+                credentials {
+                    username sonatypeUsername
+                    password sonatypePassword
+                }
+            }
+        }
+    }
+
+    tasks.withType(PublishToMavenRepository) {
+        onlyIf {
+            subproj.name != "camel-ldp-itest"
+        }
+    }
+    tasks.withType(PublishToMavenLocal) {
+        onlyIf {
+            subproj.name != "camel-ldp-itest"
+        }
+    }
+    task install(dependsOn: [assemble, publishToMavenLocal])
+    task upload(dependsOn: [assemble, publish])
+
+    processResources {
+        outputs.upToDateWhen { false }
+        filesMatching(['**/features.xml', '**/banner.txt']) {
+            expand project.properties
+        }
+    }
+
+    signing {
+        required { !version.toString().endsWith('-SNAPSHOT') && gradle.taskGraph.hasTask("publish") }
+        sign publishing.publications
+    }
+
+    task docs(type: Javadoc) {
+        outputs.upToDateWhen { false }
+        source sourceSets.main.allJava
+        classpath = files(sourceSets.main.compileClasspath)
+        destinationDir = new File(projectDir, "docs/${version}")
+        options {
+            links "https://docs.oracle.com/javase/8/docs/api/"
+            links 'https://docs.oracle.com/javaee/7/api/'
+            links 'https://www.javadoc.io/doc/org.apache.camel/camel-core/2.21.1'
+        }
+    }
+
+    sonarqube {
+        skipProject = JavaVersion.current().isJava10Compatible()
+    }
+
+    test {
+        useJUnitPlatform()
+        jacoco {
+            enabled = ! JavaVersion.current().isJava11Compatible()
+        }
+    }
+
+    afterReleaseBuild.dependsOn docs
+    afterReleaseBuild.dependsOn publish
+
+    jacoco {
+        toolVersion = jacocoVersion
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+}
+
+configure(rootProject) {
+
+    task apidocs(type: Javadoc, dependsOn: getTasksByName('docs', true)) {
+        outputs.upToDateWhen { false }
+        destinationDir = new File(projectDir, "docs/apidocs")
+        title = "Trellis Linked Data Integrations Documentation"
+        exclude '**/impl/*'
+        exclude '**/*Tests.java'
+        options {
+            memberLevel = JavadocMemberLevel.PUBLIC
+            links "https://docs.oracle.com/javase/8/docs/api/"
+            links 'https://docs.oracle.com/javaee/7/api/'
+            links 'https://www.javadoc.io/doc/org.apache.camel/camel-core/2.21.1'
+        }
+
+        source subprojects.collect { project -> project.sourceSets.main.allJava }
+        classpath = files(subprojects.collect { project -> project.sourceSets.main.compileClasspath })
+    }
+
+    sonarqube {
+        properties {
+            property "sonar.projectName", "Trellis Integration Services"
+            property "sonar.projectKey", "org.trellisldp:camel-ldp-recipes"
+            property "sonar.links.homepage", "https://www.trellisldp.org"
+            property "sonar.links.issue", "https://github.com/trellis-ldp/camel-ldp-recipes/issues"
+            property "sonar.links.scm_dev", "scm:git:git@github.com:trellis-ldp/camel-ldp-recipes.git"
+        }
+    }
+
+    // Ignore alpha, beta, milestone and release candidates
+    dependencyUpdates.resolutionStrategy = {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'm'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject("Release Candidate")
+                }
+            }
+        }
+    }
+
+	task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+		dependsOn = subprojects.test
+		additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+		sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+		classDirectories =  files(subprojects.sourceSets.main.output)
+        executionData = files(subprojects.jacocoTestReport.executionData)
+		reports {
+			html.enabled = true
+			xml.enabled = true
+			csv.enabled = false
+		}
+	}
+
+    coveralls {
+        sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
+        jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+    }
+
+    tasks.coveralls {
+        dependsOn 'jacocoRootReport'
+    }
+}

@@ -1,0 +1,5 @@
+enableFeaturePreview('STABLE_PUBLISHING')
+rootProject.name = 'camel-ldp-recipes'
+include ':camel-ldp-ldpath'
+
+project(':camel-ldp-ldpath').projectDir = "$rootDir/ldpath" as File
