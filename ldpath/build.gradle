@@ -9,11 +9,11 @@ ext {
 
 dependencies {
     api("org.apache.camel:camel-core:$camelVersion")
-    api("org.apache.marmotta:ldcache-api:$marmottaVersion")
-    api("org.apache.marmotta:ldpath-api:$marmottaVersion")
-    api("org.apache.marmotta:ldpath-backend-linkeddata:$marmottaVersion")
-    api("org.apache.marmotta:ldpath-core:$marmottaVersion")
 
+    implementation("org.apache.marmotta:ldcache-api:$marmottaVersion")
+    implementation("org.apache.marmotta:ldpath-api:$marmottaVersion")
+    implementation("org.apache.marmotta:ldpath-backend-linkeddata:$marmottaVersion")
+    implementation("org.apache.marmotta:ldpath-core:$marmottaVersion")
     implementation("org.apache.camel:camel-blueprint:$camelVersion")
     implementation("org.apache.camel:camel-http4:$camelVersion")
     implementation("org.apache.camel:camel-jackson:$camelVersion")
@@ -23,6 +23,8 @@ dependencies {
     implementation("org.apache.marmotta:ldclient-provider-rdf:$marmottaVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
+    testImplementation("javax.activation:javax.activation-api:$activationApiVersion")
+    testImplementation("javax.xml.bind:jaxb-api:$jaxbVersion")
     testImplementation("org.apache.camel:camel-test-blueprint:$camelVersion")
     testImplementation("org.mockito:mockito-core:$mockitoVersion")
     testImplementation("ch.qos.logback:logback-classic:$logbackVersion")

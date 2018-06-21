@@ -16,6 +16,7 @@ ext {
     slf4jVersion = '1.7.25'
 
     /* Testing */
+    activationApiVersion = '1.2.0'
     apiguardianVersion = '1.0.0'
     checkstyleVersion = '8.10'
     jaxbVersion = '2.3.0'
@@ -57,7 +58,7 @@ allprojects { subproj ->
     dependencies {
         testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
         testImplementation("org.apiguardian:apiguardian-api:${apiguardianVersion}")
-        testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+        testRuntime("org.junit.vintage:junit-vintage-engine:${junitVersion}")
     }
 
     gradle.projectsEvaluated {
