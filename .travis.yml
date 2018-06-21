@@ -1,0 +1,30 @@
+language: java
+sudo: required
+dist: trusty
+group: edge
+
+addons:
+  sonarcloud:
+    organization: "trellis-ldp"
+    token:
+      secure: "YXakveKVk+MD0FsbYbqGXsfF5eUHIXjkt3+p78RVWt/UaWA4r8JUtk8wddAyBeNZRmqe2eIclprwH7IUOmZMvY2O6sJ8ShGvX4VrEjT17WTxF2ubuOLrllInk/cRu0BnAxli2seezlD9nLwBs9mrnzHgoY2mfXBYDAXEHE4BWsDmvqHfs6SrWzsqws0kWlgAIsznFDmJQhO2fi2h7KSbE4eV6bx36cXH/Gco4GvzARYfiTe01MPBHvDAIHmFZsT+MDzhecfuGJfWqe7uNkKfkEmHdhGXt911BzeOoJhKEC7veBzEuxkmpPbkkrYRyKyIRjiD/6bjM/duhGugh+UfGEKf5Mb+JbqFeyO2jNB5Y9NtKMLWmYr/q3+duAc0MfAjt6uanYmONHLFi0rSj3ecSasCl1NIkgp7YJSk/oD+/esBYyN9hR27PCbutpTvLEm32HJf6619X39BQUFJ6iFJ/qGCLHeTuiDx2K5rl+2kHl3tZcYhSV9OX7Rqo7WgOnsDSBuIyCgTJZAua0vm1ZkqjkwAUMOJJhATPlPEAyFBhZ3WVxfLWpFfTpvv7n6UT0j9UKiX6j/CpJnyWDT5gsgA6bh4vHaYtTMgsJTlPT4aAd+v4O4/NMnR5bUcG3m0jTHm339gqAjnRWFBW/8SewT71okssJjfjwxHNypq5CxgvQU="
+
+matrix:
+  fast_finish: true
+
+  include:
+    # JDK 8
+    - jdk: oraclejdk8
+      env: JDK_RELEASE='JDK 1.8'
+      script: ./gradlew clean check install
+      after_success: ./gradlew jacocoRootReport coveralls sonarqube
+
+    # JDK 9
+    - jdk: oraclejdk9
+      env: JDK_RELEASE='JDK 9'
+      script: ./gradlew clean check install
+
+    # JDK 10
+    - env: JDK_RELEASE='JDK 10'
+      install: . ./buildtools/src/install/install-jdk-10.sh
+      script: ./gradlew clean check install
