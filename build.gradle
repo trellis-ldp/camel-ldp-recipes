@@ -273,9 +273,7 @@ configure(rootProject) {
     task apidocs(type: Javadoc, dependsOn: getTasksByName('docs', true)) {
         outputs.upToDateWhen { false }
         destinationDir = new File(projectDir, "docs/apidocs")
-        title = "Trellis Linked Data Integrations Documentation"
-        exclude '**/impl/*'
-        exclude '**/*Tests.java'
+        title = "Trellis Linked Data Integration Documentation"
         options {
             memberLevel = JavadocMemberLevel.PUBLIC
             links "https://docs.oracle.com/javase/8/docs/api/"
@@ -289,7 +287,7 @@ configure(rootProject) {
 
     sonarqube {
         properties {
-            property "sonar.projectName", "Trellis Integration Services"
+            property "sonar.projectName", "LDP Integration Services"
             property "sonar.projectKey", "org.trellisldp:camel-ldp-recipes"
             property "sonar.links.homepage", "https://www.trellisldp.org"
             property "sonar.links.issue", "https://github.com/trellis-ldp/camel-ldp-recipes/issues"
