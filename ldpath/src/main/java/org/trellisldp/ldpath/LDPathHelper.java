@@ -71,7 +71,7 @@ public class LDPathHelper {
         config.addFunction(NS_LMF_FUNCS + "sort", new SortFunction<>());
         config.addTestFunction(NS_LMF_FUNCS + "eq", new EqualTest<>());
         config.addTestFunction(NS_LMF_FUNCS + "ne", new NotEqualTest<>());
-        this.ldpath = new LDPath<Value>(backend, config);
+        this.ldpath = new LDPath<>(backend, config);
     }
 
     /**

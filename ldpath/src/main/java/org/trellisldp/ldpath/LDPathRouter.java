@@ -19,17 +19,13 @@ import static org.apache.camel.Exchange.HTTP_RESPONSE_CODE;
 import static org.apache.camel.Exchange.HTTP_URI;
 import static org.apache.camel.builder.PredicateBuilder.not;
 import static org.apache.camel.model.dataformat.JsonLibrary.Jackson;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.slf4j.Logger;
 
 /**
  * An HTTP service router for an LDPath service.
  */
 public class LDPathRouter extends RouteBuilder {
-
-    private static final Logger LOGGER = getLogger(LDPathRouter.class);
 
     private static final String PARSE_ROUTE = "direct:parse";
     private static final String QUERY_ROUTE = "direct:query";
