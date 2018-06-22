@@ -1,5 +1,7 @@
 enableFeaturePreview('STABLE_PUBLISHING')
 rootProject.name = 'camel-ldp-recipes'
 include ':camel-ldp-ldpath'
+include ':camel-ldp-websub'
 
 project(':camel-ldp-ldpath').projectDir = "$rootDir/ldpath" as File
+project(':camel-ldp-websub').projectDir = "$rootDir/websub" as File

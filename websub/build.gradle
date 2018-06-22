@@ -1,0 +1,38 @@
+apply plugin: 'java-library'
+apply plugin: 'osgi'
+
+description = 'Trellis LDPath service'
+
+ext {
+    moduleName = 'org.trellisldp.websub'
+}
+
+dependencies {
+    api("org.apache.camel:camel-core:$camelVersion")
+
+    implementation("org.trellisldp:camel-ldp:$camelLdpVersion")
+    implementation("org.apache.camel:camel-blueprint:$camelVersion")
+    implementation("org.apache.camel:camel-http4:$camelVersion")
+    implementation("org.apache.camel:camel-jackson:$camelVersion")
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+
+    testImplementation("javax.activation:javax.activation-api:$activationApiVersion")
+    testImplementation("javax.xml.bind:jaxb-api:$jaxbVersion")
+    testImplementation("org.apache.camel:camel-test-blueprint:$camelVersion")
+    testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
+}
+
+jar {
+    manifest {
+        description project.description
+        docURL project.docURL
+        vendor project.vendor
+        license project.license
+
+        instruction 'Automatic-Module-Name', moduleName
+        instruction 'Import-Package', '*'
+        instruction 'Export-Package', "${moduleName};version=${projectOsgiVersion}"
+    }
+}
+
