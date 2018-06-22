@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trellisldp.ldpath;
+package org.trellisldp.ext.ldpath;
 
 import static org.apache.marmotta.ldpath.model.Constants.NS_LMF_FUNCS;
 

@@ -48,7 +48,7 @@ allprojects { subproj ->
 
     jacoco.toolVersion = jacocoVersion
 
-    group = 'org.trellisldp'
+    group = 'org.trellisldp.ext'
 
     repositories {
         mavenCentral()

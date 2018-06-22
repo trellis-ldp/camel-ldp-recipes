@@ -13,14 +13,14 @@
 	 <ext:property-placeholder placeholder-prefix="$[" placeholder-suffix="]"/>
 
    <!-- OSGI blueprint property placeholder -->
-   <cm:property-placeholder id="properties" persistent-id="org.trellisldp.ldpath" update-strategy="reload">
+   <cm:property-placeholder id="properties" persistent-id="org.trellisldp.ext.ldpath" update-strategy="reload">
      <cm:default-properties>
        <cm:property name="endpoint.prefix" value="/ldpath"/>
        <cm:property name="endpoint.host" value="localhost"/>
        <cm:property name="endpoint.port" value=""/>
        <cm:property name="ldcache.timeout" value="86400"/>
        <cm:property name="ldcache.directory" value="./build/ldcache"/>
-       <cm:property name="ldpath.defaultProgram" value="language:simple:resource:classpath:org/trellisldp/ldpath/default.ldpath"/>
+       <cm:property name="ldpath.defaultProgram" value="language:simple:resource:classpath:org/trellisldp/ext/ldpath/default.ldpath"/>
      </cm:default-properties>
    </cm:property-placeholder>
 
@@ -45,12 +45,12 @@
     <argument ref="ldcache"/>
   </bean>
 
-	<bean id="ldpath" class="org.trellisldp.ldpath.LDPathHelper">
+	<bean id="ldpath" class="org.trellisldp.ext.ldpath.LDPathHelper">
 		<argument ref="ldcachebackend"/>
 	</bean>
 
   <camelContext id="ldpathContext" depends-on="ldpath" xmlns="http://camel.apache.org/schema/blueprint">
-    <package>org.trellisldp.ldpath</package>
+    <package>org.trellisldp.ext.ldpath</package>
 
     <route id="trellisLdpath">
       <from uri="direct:programQuery"/>

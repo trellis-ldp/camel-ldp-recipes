@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trellisldp.ldpath;
+package org.trellisldp.ext.ldpath;
 
 import static java.util.Collections.emptyList;
 import static org.apache.camel.Exchange.CONTENT_TYPE;

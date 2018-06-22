@@ -18,6 +18,6 @@
    </cm:property-placeholder>
 
   <camelContext id="websubContext" xmlns="http://camel.apache.org/schema/blueprint">
-    <package>org.trellisldp.websub</package>
+    <package>org.trellisldp.ext.websub</package>
   </camelContext>
 </blueprint>

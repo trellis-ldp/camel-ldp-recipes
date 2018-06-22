@@ -12,6 +12,6 @@
  * limitations under the License.
  */
 /**
- * An integration for WebSub hubs.
+ * An LDPath service using Camel middleware.
  */
-package org.trellisldp.websub;
+package org.trellisldp.ext.ldpath;
