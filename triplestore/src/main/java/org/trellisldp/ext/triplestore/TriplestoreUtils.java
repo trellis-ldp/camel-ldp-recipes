@@ -13,11 +13,12 @@
  */
 package org.trellisldp.ext.triplestore;
 
+import static java.util.Objects.nonNull;
 import static org.apache.camel.util.ExchangeHelper.getMandatoryHeader;
 import static org.trellisldp.camel.ActivityStreamProcessor.ACTIVITY_STREAM_OBJECT_ID;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.apache.camel.Exchange;
@@ -27,11 +28,14 @@ import org.apache.jena.util.URIref;
 final class TriplestoreUtils {
 
     public static String encode(final String input) {
-        try {
-            return URLEncoder.encode(input, "UTF-8");
-        } catch (final IOException ex) {
-            throw new UncheckedIOException(ex);
+        if (nonNull(input)) {
+            try {
+                return URLEncoder.encode(input, "UTF-8");
+            } catch (final UnsupportedEncodingException ex) {
+                throw new UncheckedIOException("Invalid encoding", ex);
+            }
         }
+        return "";
     }
 
     public static String sparqlUpdate(final String command) {
