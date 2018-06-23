@@ -1,25 +1,27 @@
 apply plugin: 'java-library'
 apply plugin: 'osgi'
 
-description = 'LDP WebSub integration'
+description = 'LDP Triplestore integration'
 
 ext {
-    moduleName = 'org.trellisldp.ext.websub'
+    moduleName = 'org.trellisldp.ext.triplestore'
 }
 
 dependencies {
     api("org.apache.camel:camel-core:$camelVersion")
 
-    implementation("org.trellisldp:camel-ldp:$camelLdpVersion")
     implementation("org.apache.camel:camel-blueprint:$camelVersion")
     implementation("org.apache.camel:camel-http4:$camelVersion")
     implementation("org.apache.camel:camel-jackson:$camelVersion")
+    implementation("org.apache.jena:jena-osgi:$jenaVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    implementation("org.trellisldp:camel-ldp:$camelLdpVersion")
 
+    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("javax.activation:javax.activation-api:$activationApiVersion")
     testImplementation("javax.xml.bind:jaxb-api:$jaxbVersion")
     testImplementation("org.apache.camel:camel-test-blueprint:$camelVersion")
-    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
+    testImplementation("xerces:xercesImpl:$xercesVersion")
 }
 
 jar {

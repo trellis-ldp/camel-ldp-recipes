@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trellisldp.ext.websub;
+package org.trellisldp.ext.triplestore;
 
 import static org.apache.camel.Exchange.CONTENT_TYPE;
 import static org.apache.camel.Exchange.HTTP_METHOD;
@@ -19,7 +19,11 @@ import static org.apache.camel.Exchange.HTTP_URI;
 import static org.apache.camel.component.http4.HttpMethods.POST;
 import static org.apache.camel.util.ObjectHelper.loadResourceAsStream;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.trellisldp.camel.ActivityStreamProcessor.ACTIVITY_STREAM_OBJECT_ID;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.camel.EndpointInject;
@@ -30,7 +34,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.junit.Test;
 
-public class WebSubRouterTest extends CamelBlueprintTestSupport {
+public class TriplestoreRouterTest extends CamelBlueprintTestSupport {
 
     @EndpointInject(uri = "mock:results")
     protected MockEndpoint resultEndpoint;
@@ -57,13 +61,13 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
     protected Properties useOverridePropertiesWithPropertiesComponent() {
         final Properties props = new Properties();
         props.setProperty("input.stream", "seda:input");
-        props.setProperty("subscriber.url", "https://hub.example.com");
+        props.setProperty("triplestore.url", "https://triplestore.example.com");
         return props;
     }
 
     @Test
     public void testUpdate() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
+        context.getRouteDefinition("TrellisTriplestoreUpdater").adviceWith(context, new AdviceWithRouteBuilder() {
             @Override
             public void configure() throws Exception {
                 weaveAddLast().to("mock:results");
@@ -73,46 +77,29 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
         context.start();
 
         resultEndpoint.expectedMessageCount(1);
-        resultEndpoint.expectedHeaderReceived(CONTENT_TYPE, "application/x-www-form-urlencoded");
-        resultEndpoint.expectedHeaderReceived(HTTP_URI, "https://hub.example.com");
+        resultEndpoint.expectedHeaderReceived(CONTENT_TYPE, "application/x-www-form-urlencoded; charset=utf-8");
+        resultEndpoint.expectedHeaderReceived(HTTP_URI, "https://triplestore.example.com");
         resultEndpoint.expectedHeaderReceived(HTTP_METHOD, POST);
 
-        template.sendBody("seda:input", loadResourceAsStream("update.jsonld"));
+        final Map<String, Object> headers = new HashMap<>();
+        headers.put(CONTENT_TYPE, "application/n-triples");
+        headers.put(ACTIVITY_STREAM_OBJECT_ID, "https://ldp.example.com/resource");
+        final String body = "<http://example.com> a <http://example.com/Type> .";
+        template.sendBodyAndHeaders("direct:update.triplestore", body, headers);
 
         assertMockEndpointsSatisfied();
 
         final String result = resultEndpoint.getExchanges().get(0).getIn().getBody(String.class);
-        assertEquals("hub.mode=\"publish\"&hub.url=http://www.example.com/resource", result);
-    }
-
-    @Test
-    public void testCreate() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
-        });
-        context.start();
-
-        resultEndpoint.expectedMessageCount(1);
-        resultEndpoint.expectedHeaderReceived(CONTENT_TYPE, "application/x-www-form-urlencoded");
-        resultEndpoint.expectedHeaderReceived(HTTP_URI, "https://hub.example.com");
-        resultEndpoint.expectedHeaderReceived(HTTP_METHOD, POST);
-
-        template.sendBody("seda:input", loadResourceAsStream("create.jsonld"));
-
-        assertMockEndpointsSatisfied();
-
-        final String result = resultEndpoint.getExchanges().get(0).getIn().getBody(String.class);
-        assertEquals("hub.mode=\"publish\"&hub.url=http://www.example.com/a290e05a-c09e-4f10-bd0b-3dbcba425e77",
-                result);
+        assertTrue(result.contains(TriplestoreUtils.encode(
+                        "DELETE WHERE { GRAPH <https://ldp.example.com/resource> { ?s ?p ?o } };")));
+        assertTrue(result.contains(TriplestoreUtils.encode(
+                        "INSERT DATA { GRAPH <https://ldp.example.com/resource> {" + body + "} };")));
+        assertTrue(result.startsWith("update=DELETE"));
     }
 
     @Test
     public void testDelete() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
+        context.getRouteDefinition("TrellisTriplestoreDeleter").adviceWith(context, new AdviceWithRouteBuilder() {
             @Override
             public void configure() throws Exception {
                 weaveAddLast().to("mock:results");
@@ -121,22 +108,22 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
         });
         context.start();
 
-        resultEndpoint.expectedMessageCount(0);
+        resultEndpoint.expectedMessageCount(1);
+        resultEndpoint.expectedHeaderReceived(CONTENT_TYPE, "application/x-www-form-urlencoded; charset=utf-8");
+        resultEndpoint.expectedHeaderReceived(HTTP_URI, "https://triplestore.example.com");
+        resultEndpoint.expectedHeaderReceived(HTTP_METHOD, POST);
 
         template.sendBody("seda:input", loadResourceAsStream("delete.jsonld"));
 
         assertMockEndpointsSatisfied();
+
+        final String result = resultEndpoint.getExchanges().get(0).getIn().getBody(String.class);
+        assertEquals(TriplestoreUtils.sparqlUpdate(
+                        "DELETE WHERE { GRAPH <https://www.example.com/resource> { ?s ?p ?o } };"), result);
     }
 
     @Test
     public void testNotActivityMessage() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
-        });
         context.start();
 
         resultEndpoint.expectedMessageCount(0);
@@ -148,13 +135,6 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testNotJson() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
-        });
         context.start();
 
         resultEndpoint.expectedMessageCount(0);

@@ -36,11 +36,12 @@ public class WebSubRouter extends RouteBuilder {
         from("{{input.stream}}").routeId("TrellisWebSubRouter")
             .unmarshal().json(Jackson)
             .process(new ActivityStreamProcessor())
+            .setHeader(HTTP_URI).simple("{{subscriber.url}}")
             .filter(and(
                         not(header(ACTIVITY_STREAM_TYPE).contains("Delete")),
-                        header(ACTIVITY_STREAM_OBJECT_ID).isNotNull()))
+                        header(ACTIVITY_STREAM_OBJECT_ID).isNotNull(),
+                        header(HTTP_URI).regex("^https?://.+")))
                 .setHeader(HTTP_METHOD).constant(POST)
-                .setHeader(HTTP_URI).simple("{{subscriber.url}}")
                 .setHeader(CONTENT_TYPE).constant("application/x-www-form-urlencoded")
                 .transform().simple("hub.mode=\"publish\"&hub.url=${header.ActivityStreamObjectId}")
                 .to("http4://localhost?useSystemProperties=true");

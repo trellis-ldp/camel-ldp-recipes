@@ -8,4 +8,5 @@ The projects in this repository make use of Apache Camel as an integration frame
 The current integrations include:
 
   * An [LDPath](https://marmotta.apache.org/ldpath/) query service
+  * A Triplestore indexing service
   * A [WebSub](https://www.w3.org/TR/websub/) notification service

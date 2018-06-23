@@ -10,14 +10,15 @@
        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
 
    <!-- OSGI blueprint property placeholder -->
-   <cm:property-placeholder id="properties" persistent-id="org.trellisldp.ext.websub" update-strategy="reload">
+   <cm:property-placeholder id="properties" persistent-id="org.trellisldp.ext.triplestore" update-strategy="reload">
      <cm:default-properties>
        <cm:property name="input.stream" value="seda:trellis"/>
-       <cm:property name="subscriber.url" value="http://localhost"/>
+       <cm:property name="triplestore.url" value=""/>
+       <cm:property name="prefer.header" value="return=representation;"/>
      </cm:default-properties>
    </cm:property-placeholder>
 
-  <camelContext id="websubContext" xmlns="http://camel.apache.org/schema/blueprint">
-    <package>org.trellisldp.ext.websub</package>
+  <camelContext id="triplestoreContext" xmlns="http://camel.apache.org/schema/blueprint">
+    <package>org.trellisldp.ext.triplestore</package>
   </camelContext>
 </blueprint>
