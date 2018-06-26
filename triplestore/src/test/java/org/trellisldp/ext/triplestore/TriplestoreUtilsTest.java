@@ -15,12 +15,24 @@ package org.trellisldp.ext.triplestore;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.UncheckedIOException;
+
 import org.junit.Test;
 
 public class TriplestoreUtilsTest {
 
     @Test
     public void testEncode() {
-        assertEquals("", TriplestoreUtils.encode(null));
+        assertEquals("", TriplestoreUtils.encode(null, "foo"));
+    }
+
+    @Test(expected = UncheckedIOException.class)
+    public void testNonexistentEncoding() {
+        TriplestoreUtils.encode("a value", "non-existent-encoding");
+    }
+
+    @Test
+    public void testEncodeRealValue() {
+        assertEquals("a+value+with+spaces", TriplestoreUtils.encode("a value with spaces", "UTF-8"));
     }
 }

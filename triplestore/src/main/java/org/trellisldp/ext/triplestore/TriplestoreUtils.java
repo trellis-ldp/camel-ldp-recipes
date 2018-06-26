@@ -27,19 +27,19 @@ import org.apache.jena.util.URIref;
 
 final class TriplestoreUtils {
 
-    public static String encode(final String input) {
+    public static String encode(final String input, final String encoding) {
         if (nonNull(input)) {
             try {
-                return URLEncoder.encode(input, "UTF-8");
+                return URLEncoder.encode(input, encoding);
             } catch (final UnsupportedEncodingException ex) {
-                throw new UncheckedIOException("Invalid encoding", ex);
+                throw new UncheckedIOException("Invalid encoding: " + encoding, ex);
             }
         }
         return "";
     }
 
     public static String sparqlUpdate(final String command) {
-        return "update=" + encode(command);
+        return "update=" + encode(command, "UTF-8");
     }
 
     public static String graphName(final Exchange exchange) throws NoSuchHeaderException {

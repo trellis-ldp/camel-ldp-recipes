@@ -18,6 +18,7 @@ import static org.apache.camel.Exchange.HTTP_METHOD;
 import static org.apache.camel.Exchange.HTTP_URI;
 import static org.apache.camel.LoggingLevel.INFO;
 import static org.apache.camel.builder.PredicateBuilder.and;
+import static org.apache.camel.component.http4.HttpConstants.CONTENT_TYPE_WWW_FORM_URLENCODED;
 import static org.apache.camel.component.http4.HttpMethods.GET;
 import static org.apache.camel.component.http4.HttpMethods.POST;
 import static org.apache.camel.model.dataformat.JsonLibrary.Jackson;
@@ -40,6 +41,15 @@ public class TriplestoreRouter extends RouteBuilder {
 
     private static final Logger LOGGER = getLogger(TriplestoreRouter.class);
 
+    private static final String DELETE_FROM_TRIPLESTORE = "direct:delete.triplestore";
+    private static final String FETCH_RESOURCE = "direct:fetch.resource";
+    private static final String UPDATE_TRIPLESTORE = "direct:update.triplestore";
+    private static final String HTTP_ENDPOINT = "http4://localhost?useSystemProperties=true";
+    private static final String CONTENT_TYPE_N_TRIPLES = "application/n-triples";
+    private static final String CHARSET_UTF_8 = "; charset=utf-8";
+    private static final String PREFER = "Prefer";
+    private static final String ACCEPT = "Accept";
+
     @Override
     public void configure() throws Exception {
         from("{{input.stream}}").routeId("TrellisTriplestoreRouter")
@@ -50,37 +60,37 @@ public class TriplestoreRouter extends RouteBuilder {
                         simple("'{{triplestore.url}}' regex '^https?://.+'")))
                 .choice()
                     .when(header(ACTIVITY_STREAM_TYPE).contains("Delete"))
-                        .to("direct:delete.triplestore")
+                        .to(DELETE_FROM_TRIPLESTORE)
                     .otherwise()
-                        .to("direct:fetch.resource");
+                        .to(FETCH_RESOURCE);
 
-        from("direct:delete.triplestore").routeId("TrellisTriplestoreDeleter")
+        from(DELETE_FROM_TRIPLESTORE).routeId("TrellisTriplestoreDeleter")
             .log(INFO, LOGGER, "Deleting ${headers.ActivityStreamObjectId} from triplestore")
             .setHeader(HTTP_URI).simple("{{triplestore.url}}")
             .setHeader(HTTP_METHOD).constant(POST)
-            .setHeader(CONTENT_TYPE).constant("application/x-www-form-urlencoded; charset=utf-8")
+            .setHeader(CONTENT_TYPE).constant(CONTENT_TYPE_WWW_FORM_URLENCODED + CHARSET_UTF_8)
             .process(e -> e.getIn().setBody(sparqlUpdate(deleteAll(e))))
-            .to("http4://localhost?useSystemProperties=true");
+            .to(HTTP_ENDPOINT);
 
-        from("direct:fetch.resource").routeId("TrellisResourceFetcher")
+        from(FETCH_RESOURCE).routeId("TrellisResourceFetcher")
             .setHeader(HTTP_URI).header(ACTIVITY_STREAM_OBJECT_ID)
             .setHeader(HTTP_METHOD).constant(GET)
-            .setHeader("Prefer").constant("{{prefer.header}}")
-            .setHeader("Accept").constant("application/n-triples")
-            .to("http4://localhost?useSystemProperties=true")
-            .to("direct:update.triplestore");
+            .setHeader(PREFER).constant("{{prefer.header}}")
+            .setHeader(ACCEPT).constant(CONTENT_TYPE_N_TRIPLES)
+            .to(HTTP_ENDPOINT)
+            .to(UPDATE_TRIPLESTORE);
 
-        from("direct:update.triplestore").routeId("TrellisTriplestoreUpdater")
-            .filter(header(CONTENT_TYPE).isEqualTo("application/n-triples"))
+        from(UPDATE_TRIPLESTORE).routeId("TrellisTriplestoreUpdater")
+            .filter(header(CONTENT_TYPE).isEqualTo(CONTENT_TYPE_N_TRIPLES))
                 .log(INFO, LOGGER, "Updating ${headers.ActivityStreamObjectId} in triplestore")
                 .removeHeaders("CamelHttp*")
                 .setHeader(HTTP_URI).simple("{{triplestore.url}}")
                 .setHeader(HTTP_METHOD).constant(POST)
-                .setHeader(CONTENT_TYPE).constant("application/x-www-form-urlencoded; charset=utf-8")
+                .setHeader(CONTENT_TYPE).constant(CONTENT_TYPE_WWW_FORM_URLENCODED + CHARSET_UTF_8)
                 .process(e -> e.getIn().setBody(sparqlUpdate(deleteAll(e) +
                                 "INSERT DATA { GRAPH <" + graphName(e) + "> {" +
                                 e.getIn().getBody(String.class) + "} };")))
-                .to("http4://localhost?useSystemProperties=true");
+                .to(HTTP_ENDPOINT);
     }
 
     private static String deleteAll(final Exchange exchange) throws NoSuchHeaderException {

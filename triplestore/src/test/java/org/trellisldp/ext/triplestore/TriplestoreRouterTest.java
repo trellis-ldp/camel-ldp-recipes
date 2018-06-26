@@ -91,9 +91,9 @@ public class TriplestoreRouterTest extends CamelBlueprintTestSupport {
 
         final String result = resultEndpoint.getExchanges().get(0).getIn().getBody(String.class);
         assertTrue(result.contains(TriplestoreUtils.encode(
-                        "DELETE WHERE { GRAPH <https://ldp.example.com/resource> { ?s ?p ?o } };")));
+                        "DELETE WHERE { GRAPH <https://ldp.example.com/resource> { ?s ?p ?o } };", "UTF-8")));
         assertTrue(result.contains(TriplestoreUtils.encode(
-                        "INSERT DATA { GRAPH <https://ldp.example.com/resource> {" + body + "} };")));
+                        "INSERT DATA { GRAPH <https://ldp.example.com/resource> {" + body + "} };", "UTF-8")));
         assertTrue(result.startsWith("update=DELETE"));
     }
 
