@@ -2,28 +2,17 @@ language: java
 sudo: required
 dist: trusty
 group: edge
-
 addons:
   sonarcloud:
-    organization: "trellis-ldp"
-    token:
-      secure: "QV+xP8jvxErxd11BLmK0AQmO8eiCE7v9W9C4mGN47hhSXnq3dgFq+SPR10ENiQywGFKkPT9j7KqNcghCPdLSa+LGuquKZ5CKq/GHyuCf5AksTJzTTQm1HWbp3SbRR22FAMB2joCbQFRJ1NyK+0G4rSN/6sWY0eFh8KdqLZp32/ZmpgCtpVeV8f5eZNyxnPTMXPKb15pliVCvY6PSSd7A/tKPUUIphIALUfLuG34rcnFsMFmlKcq558i8n4nmAoXoc4PkBgaUf+mzDAvFEzYFwgdK6/VVBM1EUIIBWQNY8Z39kNSbgLi4HrPPBmaDXVGGcRbgzp1rRoITD54zrPcB4GEHnrOUYvvRAHOANqjSoE6JjqCS7HSJ+yYC/IW80LmshOMYo0jksEYttVGYADXSTCg3f0zcOZey1qI3bOwwO5G69xm/y3mYQYWvvO3s5IMz1S6BN+ibGMZRMhWMcF8kGZqBv2mDRRIWIM5xGxIcVJ1ZhNnB8JA+8CdPsz38vZSzMKMYG9SPQ2Cp5J6Pvr8n/IphwKeSsM0zrJy/PIUFbkThUniJpqpDeDo1tqhvWAP/qX5KuYhXt1S2gnrlqxGgmQH/h3G8EU6D12SdZI0c/1MGMv3h72Gicyzx0eHsiseWgn7nJ0A/iVWnu5gTHT5yDFOZ9nU5X5GVeapAuOLius4="
+    organization: trellis-ldp
 
 matrix:
   fast_finish: true
-
   include:
-    # JDK 8
-    - jdk: oraclejdk8
-      after_success: ./gradlew jacocoRootReport coveralls sonarqube
+  - jdk: oraclejdk8
+    after_success: "./gradlew jacocoRootReport coveralls sonarqube"
+  - jdk: oraclejdk9
+  - jdk: oraclejdk10
+  - jdk: oraclejdk11
 
-    # JDK 9
-    - jdk: oraclejdk9
-
-    # JDK 10
-    - jdk: oraclejdk10
-
-    # JDK 11
-    - jdk: oraclejdk11
-
-script: ./gradlew clean check install
+script: "./gradlew clean check install"
