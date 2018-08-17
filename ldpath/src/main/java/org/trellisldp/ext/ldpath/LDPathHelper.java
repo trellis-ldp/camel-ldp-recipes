@@ -48,7 +48,7 @@ import org.openrdf.rio.turtle.TurtleParserFactory;
 
 public class LDPathHelper {
 
-    final LDPath<Value> ldpath;
+    private final LDPath<Value> ldpath;
 
     /**
      * Create an LDPath helper class.
