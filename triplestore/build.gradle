@@ -21,7 +21,6 @@ dependencies {
     testImplementation("javax.activation:javax.activation-api:$activationApiVersion")
     testImplementation("javax.xml.bind:jaxb-api:$jaxbVersion")
     testImplementation("org.apache.camel:camel-test-blueprint:$camelVersion")
-    testImplementation("xerces:xercesImpl:$xercesVersion")
 }
 
 jar {
