@@ -1,0 +1,10 @@
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "urn:uuid:ae810bff-289a-bc76-9d350f1aa623c9bb0",
+  "type": ["Create","http://www.w3.org/ns/prov#Activity"],
+  "actor":["http://www.trellisldp.org/ns/trellis#AdministratorAgent"],
+  "object": {
+    "id": "https://ldp.example.com/resource",
+    "type": ["http://www.w3.org/ns/ldp#RDFSource"]
+  }
+}
