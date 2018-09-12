@@ -28,6 +28,7 @@ ext {
     mockitoVersion = '2.22.0'
 
     /* OSGi */
+    camelVersionRange = "[2.22,3)"
     projectOsgiVersion = project.version.replaceAll("-SNAPSHOT", ".SNAPSHOT")
 }
 

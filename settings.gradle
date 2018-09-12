@@ -4,8 +4,10 @@ include ':camel-ldp-elasticsearch'
 include ':camel-ldp-ldpath'
 include ':camel-ldp-triplestore'
 include ':camel-ldp-websub'
+include ':camel-ldp-karaf'
 
 project(':camel-ldp-elasticsearch').projectDir = "$rootDir/elasticsearch" as File
 project(':camel-ldp-ldpath').projectDir = "$rootDir/ldpath" as File
 project(':camel-ldp-triplestore').projectDir = "$rootDir/triplestore" as File
 project(':camel-ldp-websub').projectDir = "$rootDir/websub" as File
+project(':camel-ldp-karaf').projectDir = "$rootDir/karaf" as File

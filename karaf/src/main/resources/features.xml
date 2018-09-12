@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="camel-ldp-recipes-${project.version}">
+
+  <feature name="camel-ldp-elasticsearch" version="${project.version}">
+    <details>Installs the LDP Elasticsearch connector</details>
+
+    <feature version="${camelVersionRange}">camel</feature>
+    <feature version="${camelVersionRange}">camel-blueprint</feature>
+    <feature version="${camelVersionRange}">camel-http4</feature>
+
+    <bundle>mvn:org.trellisldp.ext/camel-ldp-elasticsearch/${project.version}</bundle>
+    <configfile finalname="/etc/org.trellisldp.ext.elasticsearch.cfg">mvn:org.trellisldp.ext/ldp-camel-elasticsearch/${project.version}/cfg/configuration</configfile>
+  </feature>
+
+  <feature name="camel-ldp-websub" version="${project.version}">
+    <details>Installs the LDP WebSub connector</details>
+
+    <feature version="${camelVersionRange}">camel</feature>
+    <feature version="${camelVersionRange}">camel-blueprint</feature>
+    <feature version="${camelVersionRange}">camel-http4</feature>
+
+    <bundle>mvn:org.trellisldp.ext/camel-ldp-websub/${project.version}</bundle>
+    <configfile finalname="/etc/org.trellisldp.ext.websub.cfg">mvn:org.trellisldp.ext/ldp-camel-websub/${project.version}/cfg/configuration</configfile>
+  </feature>
+
+  <feature name="camel-ldp-triplestore" version="${project.version}">
+    <details>Installs the LDP Triplestore connector</details>
+
+    <feature version="${camelVersionRange}">camel</feature>
+    <feature version="${camelVersionRange}">camel-blueprint</feature>
+    <feature version="${camelVersionRange}">camel-http4</feature>
+
+    <bundle>mvn:org.trellisldp.ext/camel-ldp-triplestore/${project.version}</bundle>
+    <configfile finalname="/etc/org.trellisldp.ext.triplestore.cfg">mvn:org.trellisldp.ext/ldp-camel-triplestore/${project.version}/cfg/configuration</configfile>
+  </feature>
+
+  <feature name="camel-ldp-ldpath" version="${project.version}">
+    <details>Installs the LDPath service</details>
+
+    <feature version="${camelVersionRange}">camel</feature>
+    <feature version="${camelVersionRange}">camel-blueprint</feature>
+    <feature version="${camelVersionRange}">camel-jetty9</feature>
+    <feature version="${camelVersionRange}">camel-http4</feature>
+
+    <bundle>mvn:org.trellisldp.ext/camel-ldp-ldpath/${project.version}</bundle>
+    <configfile finalname="/etc/org.trellisldp.ext.ldpath.cfg">mvn:org.trellisldp.ext/ldp-camel-ldpath/${project.version}/cfg/configuration</configfile>
+  </feature>
+</features>
