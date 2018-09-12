@@ -14,8 +14,8 @@
      <cm:default-properties>
        <cm:property name="input.stream" value="seda:trellis"/>
        <cm:property name="elasticsearch.url" value="http://localhost:9200/ldp/_doc/"/>
-       <cm:property name="ldpath.service.url" value=""/>
-       <cm:property name="ldpath.program.url" value="language:simple:resource:classpath:org/trellisldp/ext/elasticsearch/default.ldpath"/>
+       <cm:property name="ldpath.service.url" value="http://localhost:6543/ldpath"/>
+       <cm:property name="ldpath.program.url" value=""/>
      </cm:default-properties>
    </cm:property-placeholder>
 

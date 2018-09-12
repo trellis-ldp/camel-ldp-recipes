@@ -17,7 +17,7 @@
      <cm:default-properties>
        <cm:property name="endpoint.prefix" value="/ldpath"/>
        <cm:property name="endpoint.host" value="localhost"/>
-       <cm:property name="endpoint.port" value=""/>
+       <cm:property name="endpoint.port" value="6543"/>
        <cm:property name="ldcache.timeout" value="86400"/>
 			 <cm:property name="ldcache.directory" value="$[karaf.data]/ldcache"/>
        <cm:property name="ldpath.defaultProgram" value="language:simple:resource:classpath:org/trellisldp/ext/ldpath/default.ldpath"/>
