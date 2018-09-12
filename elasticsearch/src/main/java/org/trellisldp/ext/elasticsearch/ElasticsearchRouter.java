@@ -38,6 +38,8 @@ import org.trellisldp.camel.ActivityStreamProcessor;
 public class ElasticsearchRouter extends RouteBuilder {
 
     private static final Logger LOGGER = getLogger(ElasticsearchRouter.class);
+    private static final String HTTP_ENDPOINT = "http4://localhost?useSystemProperties=true";
+    private static final String CAMEL_HTTP_HEADERS = "CamelHttp*";
 
     @Override
     public void configure() throws Exception {
@@ -58,26 +60,26 @@ public class ElasticsearchRouter extends RouteBuilder {
 
         from("direct:delete.elasticsearch").routeId("TrellisElasticsearchDeleter")
             .log(INFO, LOGGER, "Deleting ${headers.ActivityStreamObjectId} from elasticsearch")
-            .removeHeaders("CamelHttp*")
+            .removeHeaders(CAMEL_HTTP_HEADERS)
             .setHeader(HTTP_URI).simple("{{elasticsearch.url}}${headers.ElasticSearchId}")
             .setHeader(HTTP_METHOD).constant(DELETE)
-            .to("http4://localhost?useSystemProperties=true");
+            .to(HTTP_ENDPOINT);
 
         from("direct:fetch.resource").routeId("TrellisLdpathFormatter")
             .log(INFO, LOGGER, "Fetching resource via LDPath: ${headers.ActivityStreamObjectId}")
-            .removeHeaders("CamelHttp*")
+            .removeHeaders(CAMEL_HTTP_HEADERS)
             .setHeader(HTTP_URI).simple("{{ldpath.service.url}}")
             .setHeader(HTTP_METHOD).constant(GET)
             .setHeader(HTTP_QUERY).simple("url=${headers.ActivityStreamObjectId}&program={{ldpath.program.url}}")
-            .to("http4://localhost?useSystemProperties=true")
+            .to(HTTP_ENDPOINT)
             .to("direct:update.elasticsearch");
 
         from("direct:update.elasticsearch").routeId("TrellisElasticsearchUpdater")
-            .removeHeaders("CamelHttp*")
+            .removeHeaders(CAMEL_HTTP_HEADERS)
             .setHeader(HTTP_URI).simple("{{elasticsearch.url}}${headers.ElasticSearchId}")
             .setHeader(HTTP_METHOD).constant(PUT)
             .setHeader(CONTENT_TYPE).constant("application/json")
-            .to("http4://localhost?useSystemProperties=true");
+            .to(HTTP_ENDPOINT);
     }
 }
 
