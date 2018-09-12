@@ -14,7 +14,6 @@
 package org.trellisldp.ext.elasticsearch;
 
 import static java.net.URLEncoder.encode;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.camel.Exchange.CONTENT_TYPE;
 import static org.apache.camel.Exchange.HTTP_METHOD;
 import static org.apache.camel.Exchange.HTTP_QUERY;
@@ -50,7 +49,7 @@ public class ElasticsearchRouter extends RouteBuilder {
                         simple("'{{ldpath.service.url}}' regex '^https?://.+'"),
                         simple("'{{elasticsearch.url}}' regex '^https?://.+'")))
                 .process(e -> e.getIn().setHeader("ElasticSearchId",
-                            encode(e.getIn().getHeader(ACTIVITY_STREAM_OBJECT_ID, String.class), UTF_8)))
+                            encode(e.getIn().getHeader(ACTIVITY_STREAM_OBJECT_ID, String.class), "UTF-8")))
                 .choice()
                     .when(header(ACTIVITY_STREAM_TYPE).contains("Delete"))
                         .to("direct:delete.elasticsearch")
