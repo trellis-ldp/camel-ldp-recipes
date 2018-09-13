@@ -55,6 +55,7 @@
     <feature version="${camelVersionRange}">camel-http4</feature>
     <feature version="${camelVersionRange}">camel-jackson</feature>
 
+    <!-- Marmotta dependencies -->
     <bundle dependency="true">mvn:org.apache.marmotta/ldpath-api/${marmottaVersion}</bundle>
     <bundle dependency="true">mvn:org.apache.marmotta/ldpath-core-bundle/${marmottaVersion}</bundle>
     <bundle dependency="true">mvn:org.apache.marmotta/ldpath-backend-linkeddata/${marmottaVersion}</bundle>
@@ -66,9 +67,7 @@
     <bundle dependency="true">mvn:org.apache.marmotta/marmotta-commons/${marmottaVersion}</bundle>
     <bundle dependency="true">mvn:org.apache.marmotta/ldcache-backend-infinispan/${marmottaVersion}</bundle>
 
-    <!-- Marmotta dependencies -->
-
-    <!-- pinned dependencies -->
+    <!-- Marmotta transitive dependencies -->
     <!-- Sesame 2.7 depends on Logback 0.9.x -->
     <bundle dependency="true">mvn:ch.qos.logback/logback-classic/0.9.30</bundle>
     <bundle dependency="true">mvn:ch.qos.logback/logback-core/0.9.30</bundle>
@@ -82,9 +81,9 @@
     <!-- Need jsonld-java 0.5.x for Sesame-based jsonld parser -->
     <bundle dependency="true">mvn:com.github.jsonld-java/jsonld-java/0.5.1</bundle>
     <bundle dependency="true">mvn:com.github.jsonld-java/jsonld-java-sesame/0.5.1</bundle>
-    <!-- need 3.x series -->
+    <!-- Infinispan 6.x needs 3.x series -->
     <bundle dependency="true">mvn:org.jgroups/jgroups/3.6.16.Final</bundle>
-    <!-- need version 1.4.10 for ispn dependency -->
+    <!-- Infinispan 6.x needs version 1.4.10 -->
     <bundle dependency="true">mvn:org.jboss.marshalling/jboss-marshalling-osgi/1.4.10.Final</bundle>
 
     <bundle dependency="true">wrap:mvn:au.com.bytecode/opencsv/2.4</bundle>
