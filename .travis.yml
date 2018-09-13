@@ -19,9 +19,12 @@ cache:
 matrix:
   fast_finish: true
   include:
-  - jdk: oraclejdk8
-    after_success: "./gradlew jacocoRootReport coveralls sonarqube"
-  - jdk: oraclejdk10
-  - jdk: openjdk11
+    - jdk: oraclejdk8
+      after_success: "./gradlew jacocoRootReport coveralls sonarqube"
+    - jdk: oraclejdk10
+    - jdk: oraclejdk11
+
+  allow_failures:
+    - jdk: oraclejdk11
 
 script: "./gradlew clean check install"
