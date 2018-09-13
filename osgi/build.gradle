@@ -1,4 +1,3 @@
-apply plugin: 'osgi'
 
 description = """Camel LDP OSGi Tests"""
 
