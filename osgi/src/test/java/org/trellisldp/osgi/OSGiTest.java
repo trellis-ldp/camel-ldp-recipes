@@ -41,6 +41,7 @@ import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.service.component.ComponentException;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -138,20 +139,15 @@ public class OSGiTest {
                 featuresService.isInstalled(featuresService.getFeature("camel-ldp-elasticsearch")));
     }
 
-    protected <T> T getOsgiService(final Class<T> type, final String filter, final long timeout) {
-        try {
-            final ServiceTracker<?, T> tracker = new ServiceTracker<>(bundleContext,
-                    createFilter("(&(" + OBJECTCLASS + "=" + type.getName() + ")" + filter + ")"), null);
-            tracker.open(true);
-            final T svc = tracker.waitForService(timeout);
-            if (svc == null) {
-                throw new RuntimeException("Gave up waiting for service " + filter);
-            }
-            return svc;
-        } catch (InvalidSyntaxException e) {
-            throw new IllegalArgumentException("Invalid filter", e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+    protected <T> T getOsgiService(final Class<T> type, final String filter, final long timeout)
+            throws InvalidSyntaxException, InterruptedException {
+        final ServiceTracker<?, T> tracker = new ServiceTracker<>(bundleContext,
+                createFilter("(&(" + OBJECTCLASS + "=" + type.getName() + ")" + filter + ")"), null);
+        tracker.open(true);
+        final T svc = tracker.waitForService(timeout);
+        if (svc == null) {
+            throw new ComponentException("Gave up waiting for service " + filter);
         }
+        return svc;
     }
 }
