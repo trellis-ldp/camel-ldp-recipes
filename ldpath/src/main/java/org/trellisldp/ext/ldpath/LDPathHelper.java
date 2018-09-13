@@ -15,6 +15,8 @@ package org.trellisldp.ext.ldpath;
 
 import static org.apache.marmotta.ldpath.model.Constants.NS_LMF_FUNCS;
 
+import com.github.jsonldjava.sesame.SesameJSONLDParserFactory;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
@@ -58,6 +60,7 @@ public class LDPathHelper {
         RDFParserRegistry.getInstance().add(new TurtleParserFactory());
         RDFParserRegistry.getInstance().add(new N3ParserFactory());
         RDFParserRegistry.getInstance().add(new TriGParserFactory());
+        RDFParserRegistry.getInstance().add(new SesameJSONLDParserFactory());
         BooleanQueryResultParserRegistry.getInstance().add(new SPARQLBooleanXMLParserFactory());
         TupleQueryResultParserRegistry.getInstance().add(new SPARQLResultsXMLParserFactory());
 
