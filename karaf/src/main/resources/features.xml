@@ -7,9 +7,12 @@
     <feature version="${camelVersionRange}">camel</feature>
     <feature version="${camelVersionRange}">camel-blueprint</feature>
     <feature version="${camelVersionRange}">camel-http4</feature>
+    <feature version="${camelVersionRange}">camel-jackson</feature>
+
+    <bundle dependency="true">mvn:org.trellisldp/camel-ldp/${camelLdpVersion}</bundle>
 
     <bundle>mvn:org.trellisldp.ext/camel-ldp-elasticsearch/${project.version}</bundle>
-    <configfile finalname="/etc/org.trellisldp.ext.elasticsearch.cfg">mvn:org.trellisldp.ext/ldp-camel-elasticsearch/${project.version}/cfg/configuration</configfile>
+    <configfile finalname="/etc/org.trellisldp.ext.elasticsearch.cfg">mvn:org.trellisldp.ext/camel-ldp-elasticsearch/${project.version}/cfg/configuration</configfile>
   </feature>
 
   <feature name="camel-ldp-websub" version="${project.version}">
@@ -18,9 +21,12 @@
     <feature version="${camelVersionRange}">camel</feature>
     <feature version="${camelVersionRange}">camel-blueprint</feature>
     <feature version="${camelVersionRange}">camel-http4</feature>
+    <feature version="${camelVersionRange}">camel-jackson</feature>
+
+    <bundle dependency="true">mvn:org.trellisldp/camel-ldp/${camelLdpVersion}</bundle>
 
     <bundle>mvn:org.trellisldp.ext/camel-ldp-websub/${project.version}</bundle>
-    <configfile finalname="/etc/org.trellisldp.ext.websub.cfg">mvn:org.trellisldp.ext/ldp-camel-websub/${project.version}/cfg/configuration</configfile>
+    <configfile finalname="/etc/org.trellisldp.ext.websub.cfg">mvn:org.trellisldp.ext/camel-ldp-websub/${project.version}/cfg/configuration</configfile>
   </feature>
 
   <feature name="camel-ldp-triplestore" version="${project.version}">
@@ -29,9 +35,14 @@
     <feature version="${camelVersionRange}">camel</feature>
     <feature version="${camelVersionRange}">camel-blueprint</feature>
     <feature version="${camelVersionRange}">camel-http4</feature>
+    <feature version="${camelVersionRange}">camel-jackson</feature>
+    <feature version="${jenaVersionRange}">jena</feature>
+
+    <bundle dependency="true">mvn:javax.annotation/javax.annotation-api/${javaxAnnotationsVersion}</bundle>
+    <bundle dependency="true">mvn:org.trellisldp/camel-ldp/${camelLdpVersion}</bundle>
 
     <bundle>mvn:org.trellisldp.ext/camel-ldp-triplestore/${project.version}</bundle>
-    <configfile finalname="/etc/org.trellisldp.ext.triplestore.cfg">mvn:org.trellisldp.ext/ldp-camel-triplestore/${project.version}/cfg/configuration</configfile>
+    <configfile finalname="/etc/org.trellisldp.ext.triplestore.cfg">mvn:org.trellisldp.ext/camel-ldp-triplestore/${project.version}/cfg/configuration</configfile>
   </feature>
 
   <feature name="camel-ldp-ldpath" version="${project.version}">
@@ -41,8 +52,39 @@
     <feature version="${camelVersionRange}">camel-blueprint</feature>
     <feature version="${camelVersionRange}">camel-jetty9</feature>
     <feature version="${camelVersionRange}">camel-http4</feature>
+    <feature version="${camelVersionRange}">camel-jackson</feature>
+    <feature version="${jenaVersionRange}">jena</feature>
+
+    <bundle dependency="true">mvn:org.openrdf.sesame/sesame-runtime-osgi/2.7.16</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldpath-api/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldpath-core-bundle/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldpath-backend-linkeddata/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldcache-api/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldcache-core/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldcache-backend-file/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldclient-api/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldclient-core/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/marmotta-commons/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:org.apache.marmotta/ldcache-backend-infinispan/${marmottaVersion}</bundle>
+    <bundle dependency="true">mvn:com.google.guava/guava/19.0</bundle>
+    <bundle dependency="true">wrap:mvn:au.com.bytecode/opencsv/2.4</bundle>
+    <bundle dependency="true">mvn:commons-validator/commons-validator/1.5.1</bundle>
+    <bundle dependency="true">mvn:joda-time/joda-time/2.5</bundle>
+    <bundle dependency="true">mvn:org.infinispan/infinispan-core/6.0.1.Final</bundle>
+    <bundle dependency="true">mvn:org.infinispan/infinispan-commons/6.0.1.Final</bundle>
+    <bundle dependency="true">mvn:org.jboss.logging/jboss-logging/3.1.3.GA</bundle>
+    <bundle dependency="true">wrap:mvn:org.jboss.marshalling/jboss-marshalling/1.4.10.Final</bundle>
+    <bundle dependency="true">mvn:org.jgroups/jgroups/3.4.0.Final</bundle>
+    <bundle dependency="true">mvn:commons-beanutils/commons-beanutils/1.9.2</bundle>
+    <bundle dependency="true">mvn:commons-collections/commons-collections/3.2.2</bundle>
+    <bundle dependency="true">mvn:commons-digester/commons-digester/1.8.1</bundle>
+    <bundle dependency="true">mvn:org.jsoup/jsoup/1.8.3</bundle>
+    <bundle dependency="true">wrap:mvn:org.jdom/jdom2/2.0.5</bundle>
+
+    <bundle dependency="true">mvn:ch.qos.logback/logback-classic/0.9.30</bundle>
+    <bundle dependency="true">mvn:ch.qos.logback/logback-core/0.9.30</bundle>
 
     <bundle>mvn:org.trellisldp.ext/camel-ldp-ldpath/${project.version}</bundle>
-    <configfile finalname="/etc/org.trellisldp.ext.ldpath.cfg">mvn:org.trellisldp.ext/ldp-camel-ldpath/${project.version}/cfg/configuration</configfile>
+    <configfile finalname="/etc/org.trellisldp.ext.ldpath.cfg">mvn:org.trellisldp.ext/camel-ldp-ldpath/${project.version}/cfg/configuration</configfile>
   </feature>
 </features>

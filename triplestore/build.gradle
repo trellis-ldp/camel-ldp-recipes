@@ -36,3 +36,11 @@ jar {
     }
 }
 
+publishing.publications {
+    maven(MavenPublication) {
+        artifact ('build/cfg/main/org.trellisldp.ext.triplestore.cfg') {
+            classifier 'configuration'
+            extension 'cfg'
+        }
+    }
+}

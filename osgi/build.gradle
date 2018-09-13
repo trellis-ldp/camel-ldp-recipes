@@ -1,0 +1,117 @@
+apply plugin: 'osgi'
+
+description = """Camel LDP OSGi Tests"""
+
+ext {
+    moduleName = 'org.trellisldp.ext.osgi'
+}
+
+def randomPort() {
+    try {
+        ServerSocket server = new ServerSocket()
+        server.setReuseAddress(true)
+        server.bind(new InetSocketAddress(0))
+        int port = server.getLocalPort()
+        server.close()
+        return port
+    } catch (IOException e) {
+        throw new IOException('Failed to find random free port', e)
+    }
+}
+
+configurations {
+    karafDistro {
+        description = 'Configuration used to isolate the dependency on the Karaf distro'
+        transitive = false
+    }
+}
+
+sonarqube {
+    skipProject = true
+}
+
+dependencies {
+    testCompile("ch.qos.logback:logback-classic:$logbackVersion")
+    testCompile("org.apache.karaf.features:standard:$karafVersion")
+    testCompile("org.apache.karaf.features:org.apache.karaf.features.core:$karafVersion")
+    testCompile("org.ops4j.pax.exam:pax-exam:$paxExamVersion")
+    testCompile("org.ops4j.pax.exam:pax-exam-junit4:$paxExamVersion")
+    testCompile("org.ops4j.pax.exam:pax-exam-container-karaf:$paxExamVersion")
+    testCompile("org.osgi:org.osgi.core:$osgiVersion")
+    testCompile("org.osgi:org.osgi.compendium:$osgiCompendiumVersion")
+    testCompile("org.mockito:mockito-core:$mockitoVersion")
+    testCompile("org.glassfish.hk2.external:javax.inject:$javaxInjectVersion")
+    testCompile project(':camel-ldp-websub')
+    testCompile project(':camel-ldp-triplestore')
+    testCompile project(':camel-ldp-ldpath')
+    testCompile project(':camel-ldp-elasticsearch')
+    testCompile project(':camel-ldp-karaf')
+
+    testCompile group: 'org.apache.karaf.features', name: 'standard', version: karafVersion, classifier:'features', ext: 'xml'
+
+    testRuntime("org.junit.vintage:junit-vintage-engine:${junitVersion}")
+
+    karafDistro group: 'org.apache.karaf', name: 'apache-karaf', version: karafVersion, ext: 'zip'
+}
+
+
+task generateDependsFile {
+    // This is useful for the org.ops4j.pax.exam.CoreOptions.maven() stuff
+    File outputFileDir = project.file( "${project.buildDir}/classes/java/test/META-INF/maven/" )
+    File outputFile = new File( outputFileDir, 'dependencies.properties' )
+    outputs.file outputFile
+
+    doFirst {
+        outputFileDir.mkdirs()
+        Properties properties = new Properties();
+
+        // first we add our GAV info
+        properties.setProperty( "groupId", "${project.group}" );
+        properties.setProperty( "artifactId", project.name );
+        properties.setProperty( "version", "${project.version}" );
+        properties.setProperty( "${project.group}/${project.name}/version", "${project.version}" );
+
+        // then for all our deps
+        project.configurations.testRuntime.resolvedConfiguration.resolvedArtifacts.each {
+            final String keyBase = it.moduleVersion.id.group + '/' + it.moduleVersion.id.name;
+            properties.setProperty( "${keyBase}/scope", "compile" )
+            properties.setProperty( "${keyBase}/type", it.extension )
+            properties.setProperty( "${keyBase}/version", it.moduleVersion.id.version )
+        }
+
+        FileOutputStream outputStream = new FileOutputStream( outputFile );
+        try {
+            properties.store( outputStream, "Generated from Gradle for PaxExam testing" )
+        }
+        finally {
+            outputStream.close()
+        }
+    }
+}
+
+javadoc {
+    enabled = false
+}
+
+test {
+    systemProperty 'karaf.version', karafVersion
+    systemProperty 'jena.version', jenaVersion
+    systemProperty 'camel.version', camelVersion
+
+    systemProperty 'karaf.ssh.port', randomPort()
+    systemProperty 'karaf.rmiServer.port', randomPort()
+    systemProperty 'karaf.rmiRegistry.port', randomPort()
+
+    enabled = JavaVersion.current().isJava8() || JavaVersion.current().isJava10()
+
+    jacoco {
+        enabled = true
+    }
+}
+
+tasks.test.dependsOn tasks.generateDependsFile
+
+rootProject.childProjects.findAll { n, p -> p != project }.each { n, p ->
+    tasks.test.dependsOn p.tasks.install
+}
+

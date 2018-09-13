@@ -35,3 +35,11 @@ jar {
     }
 }
 
+publishing.publications {
+    maven(MavenPublication) {
+        artifact ('build/cfg/main/org.trellisldp.ext.websub.cfg') {
+            classifier 'configuration'
+            extension 'cfg'
+        }
+    }
+}
