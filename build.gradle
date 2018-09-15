@@ -258,7 +258,8 @@ subprojects { subproj ->
     }
 
     sonarqube {
-        skipProject = JavaVersion.current().isJava10Compatible()
+        // Run only with java8
+        skipProject = ! JavaVersion.current().isJava8()
     }
 
     test {
