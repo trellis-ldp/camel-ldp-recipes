@@ -10,17 +10,45 @@ addons:
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.bin
+  - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.lock
 
 cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-matrix:
-  fast_finish: true
-  include:
-    - jdk: oraclejdk8
-      after_success: "./gradlew jacocoRootReport coveralls sonarqube"
-    - jdk: oraclejdk11
+stages:
+  - test
+  - deploy
 
-script: "./gradlew clean check install"
+env:
+    - JOB=check
+
+jobs:
+    fast_finish: true
+
+    allow_failures:
+      - env: JOB=sonatype
+
+    include:
+        # JDK 8
+        - name: "Java 8"
+          stage: test
+          jdk: oraclejdk8
+          script: ./gradlew check install jacocoRootReport
+          after_success: ./gradlew coveralls sonarqube
+
+        # JDK 11
+        - name: "Java 11"
+          stage: test
+          jdk: oraclejdk11
+          script: ./gradlew check install
+
+        - name: "Publish to Sonatype"
+          stage: deploy
+          jdk: oraclejdk8
+          env: JOB=sonatype
+          if: branch = master AND type = push
+          # Only automate the publication of SNAPSHOTS
+          script: if [[ $(./gradlew -q getVersion) == *SNAPSHOT* ]]; then ./gradlew publish ; fi

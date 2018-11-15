@@ -207,8 +207,8 @@ subprojects { subproj ->
         }
         repositories {
             maven {
-                def sonatypeUsername = project.hasProperty('ossrhUsername') ? ossrhUsername : ""
-                def sonatypePassword = project.hasProperty('ossrhPassword') ? ossrhPassword : ""
+                def sonatypeUsername = project.hasProperty('ossrhUsername') ? ossrhUsername : System.getenv("SONATYPE_USERNAME") ?: ""
+                def sonatypePassword = project.hasProperty('ossrhPassword') ? ossrhPassword : System.getenv("SONATYPE_PASSWORD") ?: ""
                 if (version.endsWith("SNAPSHOT")) {
                     url "https://oss.sonatype.org/content/repositories/snapshots/"
                 } else {
@@ -368,5 +368,11 @@ configure(rootProject) {
 
     tasks.coveralls {
         dependsOn 'jacocoRootReport'
+    }
+
+    task getVersion {
+        doLast {
+            println project.version
+        }
     }
 }
