@@ -1,0 +1,4 @@
+org.trellisldp.ext.elasticsearch
+org.trellisldp.ext.ldpath
+org.trellisldp.ext.triplestore
+org.trellisldp.ext.websub
