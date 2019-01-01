@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'osgi'
+apply plugin: 'biz.aQute.bnd.builder'
 
 description = 'LDP Elasticsearch integration'
 
@@ -20,19 +20,6 @@ dependencies {
     testImplementation("javax.activation:javax.activation-api:$activationApiVersion")
     testImplementation("javax.xml.bind:jaxb-api:$jaxbVersion")
     testImplementation("org.apache.camel:camel-test-blueprint:$camelVersion")
-}
-
-jar {
-    manifest {
-        description project.description
-        docURL project.docURL
-        vendor project.vendor
-        license project.license
-
-        instruction 'Automatic-Module-Name', moduleName
-        instruction 'Import-Package', '*'
-        instruction 'Export-Package', "${moduleName};version=${projectOsgiVersion}"
-    }
 }
 
 publishing.publications {

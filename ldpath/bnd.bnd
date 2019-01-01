@@ -1,0 +1,20 @@
+Automatic-Module-Name:  ${project.ext.moduleName}
+Export-Package:         ${project.ext.moduleName}
+
+Bundle-Vendor:          ${project.vendor}
+Bundle-Version:         ${project.version}
+Bundle-License:         ${project.license}
+Bundle-DocURL:          ${project.docURL}
+Bundle-Description:     ${project.description}
+Bundle-Name:            ${project.name}
+Bundle-SymbolicName:    ${project.group}.${project.name}
+Bundle-SCM:             url=https://github.com/trellis-ldp/camel-ldp-recipes, \
+                        connection=scm:git:https://github.com/trellis-ldp/camel-ldp-recipes.git, \
+                        developerConnection=scm:git:git@github.com:trellis-ldp/camel-ldp-recipes.git
+
+Import-Package:         org.apache.marmotta.ldcache.backend.file, \
+                        org.apache.marmotta.ldcache.model, \
+                        org.apache.marmotta.ldcache.services, \
+                        org.apache.marmotta.ldpath.api, \
+                        org.apache.marmotta.ldpath.backend.linkeddata, \
+                        *

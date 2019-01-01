@@ -1,4 +1,3 @@
-enableFeaturePreview('STABLE_PUBLISHING')
 rootProject.name = 'camel-ldp-recipes'
 include ':camel-ldp-elasticsearch'
 include ':camel-ldp-ldpath'
