@@ -155,7 +155,7 @@ subprojects { subproj ->
 
     publishing {
         publications {
-            mavenJava(MavenPublication) {
+            maven(MavenPublication) {
                 pom {
                     packaging = 'jar'
                     name = 'Trellis Linked Data Integrations'
@@ -303,7 +303,7 @@ configure(rootProject) {
 
     task apidocs(type: Javadoc, dependsOn: getTasksByName('docs', true)) {
         outputs.upToDateWhen { false }
-        destinationDir = new File(projectDir, "docs/apidocs")
+        destinationDir = new File(projectDir, "docs/apidocs/${project.version}")
         title = "Trellis Linked Data Integration Documentation"
         options {
             memberLevel = JavadocMemberLevel.PUBLIC
