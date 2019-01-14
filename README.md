@@ -10,5 +10,5 @@ The current integrations include:
 
   * An [LDPath](https://marmotta.apache.org/ldpath/) query service
   * An [Elasticsearch](https://www.elastic.co) indexing service
-  * A Triplestore indexing service
+  * A [Triplestore](https://en.wikipedia.org/wiki/Triplestore) indexing service
   * A [WebSub](https://www.w3.org/TR/websub/) notification service
