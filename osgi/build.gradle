@@ -100,6 +100,8 @@ test {
     systemProperty 'karaf.ssh.port', randomPort()
     systemProperty 'karaf.rmiServer.port', randomPort()
     systemProperty 'karaf.rmiRegistry.port', randomPort()
+
+    enabled = ! JavaVersion.current().isJava9Compatible()
 }
 
 tasks.test.dependsOn tasks.generateDependsFile
