@@ -13,7 +13,6 @@
  */
 package org.trellisldp.ext.triplestore;
 
-import static java.util.Objects.nonNull;
 import static org.apache.camel.util.ExchangeHelper.getMandatoryHeader;
 import static org.trellisldp.camel.ActivityStreamProcessor.ACTIVITY_STREAM_OBJECT_ID;
 
@@ -28,7 +27,7 @@ import org.apache.jena.util.URIref;
 final class TriplestoreUtils {
 
     public static String encode(final String input, final String encoding) {
-        if (nonNull(input)) {
+        if (input != null) {
             try {
                 return URLEncoder.encode(input, encoding);
             } catch (final UnsupportedEncodingException ex) {
