@@ -43,6 +43,7 @@ jobs:
         - name: "Java 11"
           stage: test
           jdk: openjdk11
+          dist: xenial
           script: ./gradlew check install
 
         - name: "Publish to Sonatype"
