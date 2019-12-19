@@ -52,7 +52,7 @@ public class LDPathRouter extends RouteBuilder {
                 .when(header("program").regex("^https?://.*"))
                     .removeHeaders("CamelHttp*")
                     .setHeader(HTTP_URI).header("program")
-                    .to("http4://localhost?useSystemProperties=true")
+                    .to("http://localhost?useSystemProperties=true")
                     .to(PARSE_ROUTE)
                 .otherwise()
                     .to("{{ldpath.defaultProgram}}")

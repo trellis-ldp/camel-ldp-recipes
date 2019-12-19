@@ -8,28 +8,30 @@ ext {
 }
 
 dependencies {
-    api("org.apache.camel:camel-core:$camelVersion")
+    api enforcedPlatform("org.apache.camel:camel-bom:$camelVersion")
 
-    implementation("org.apache.camel:camel-blueprint:$camelVersion")
-    implementation("org.apache.camel:camel-http4:$camelVersion")
-    implementation("org.apache.camel:camel-jackson:$camelVersion")
-    implementation("org.apache.camel:camel-jetty9:$camelVersion")
-    implementation("org.apache.marmotta:ldcache-api:$marmottaVersion")
-    implementation("org.apache.marmotta:ldcache-backend-file:$marmottaVersion")
-    implementation("org.apache.marmotta:ldcache-core:$marmottaVersion")
-    implementation("org.apache.marmotta:ldclient-provider-xml:$marmottaVersion")
-    implementation("org.apache.marmotta:ldclient-provider-rdf:$marmottaVersion")
-    implementation("org.apache.marmotta:ldclient-core:$marmottaVersion")
-    implementation("org.apache.marmotta:ldpath-api:$marmottaVersion")
-    implementation("org.apache.marmotta:ldpath-backend-linkeddata:$marmottaVersion")
-    implementation("org.apache.marmotta:ldpath-core:$marmottaVersion")
-    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    api "org.apache.camel:camel-api"
 
-    testImplementation("javax.activation:javax.activation-api:$activationApiVersion")
-    testImplementation("javax.xml.bind:jaxb-api:$jaxbVersion")
-    testImplementation("org.apache.camel:camel-test-blueprint:$camelVersion")
-    testImplementation("org.mockito:mockito-core:$mockitoVersion")
-    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation "org.apache.camel:camel-blueprint"
+    implementation "org.apache.camel:camel-http"
+    implementation "org.apache.camel:camel-jackson"
+    implementation "org.apache.camel:camel-jetty"
+    implementation "org.apache.marmotta:ldcache-api:$marmottaVersion"
+    implementation "org.apache.marmotta:ldcache-backend-file:$marmottaVersion"
+    implementation "org.apache.marmotta:ldcache-core:$marmottaVersion"
+    implementation "org.apache.marmotta:ldclient-provider-xml:$marmottaVersion"
+    implementation "org.apache.marmotta:ldclient-provider-rdf:$marmottaVersion"
+    implementation "org.apache.marmotta:ldclient-core:$marmottaVersion"
+    implementation "org.apache.marmotta:ldpath-api:$marmottaVersion"
+    implementation "org.apache.marmotta:ldpath-backend-linkeddata:$marmottaVersion"
+    implementation "org.apache.marmotta:ldpath-core:$marmottaVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+
+    testImplementation "jakarta.activation:jakarta.activation-api:$activationApiVersion"
+    testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
+    testImplementation "org.apache.camel:camel-test-blueprint"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
 }
 
 publishing.publications {

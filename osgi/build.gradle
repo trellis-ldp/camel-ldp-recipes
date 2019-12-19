@@ -30,25 +30,27 @@ sonarqube {
 }
 
 dependencies {
-    testCompile("ch.qos.logback:logback-classic:$logbackVersion")
-    testCompile("org.apache.karaf.features:standard:$karafVersion")
-    testCompile("org.apache.karaf.features:org.apache.karaf.features.core:$karafVersion")
-    testCompile("org.ops4j.pax.exam:pax-exam:$paxExamVersion")
-    testCompile("org.ops4j.pax.exam:pax-exam-junit4:$paxExamVersion")
-    testCompile("org.ops4j.pax.exam:pax-exam-container-karaf:$paxExamVersion")
-    testCompile("org.osgi:org.osgi.core:$osgiVersion")
-    testCompile("org.osgi:org.osgi.compendium:$osgiCompendiumVersion")
-    testCompile("org.mockito:mockito-core:$mockitoVersion")
-    testCompile("org.glassfish.hk2.external:javax.inject:$javaxInjectVersion")
-    testCompile project(':camel-ldp-websub')
-    testCompile project(':camel-ldp-triplestore')
-    testCompile project(':camel-ldp-ldpath')
-    testCompile project(':camel-ldp-elasticsearch')
+    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
+    testImplementation "org.apache.karaf.features:standard:$karafVersion"
+    testImplementation "org.apache.karaf.features:org.apache.karaf.features.core:$karafVersion"
+    testImplementation "org.ops4j.pax.exam:pax-exam:$paxExamVersion"
+    testImplementation "org.ops4j.pax.exam:pax-exam-junit4:$paxExamVersion"
+    testImplementation "org.ops4j.pax.exam:pax-exam-container-karaf:$paxExamVersion"
+    testImplementation "org.osgi:org.osgi.core:$osgiVersion"
+    testImplementation "org.osgi:org.osgi.compendium:$osgiCompendiumVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.glassfish.hk2.external:javax.inject:2.5.0-b62"
+
+    testImplementation project(':camel-ldp-websub')
+    testImplementation project(':camel-ldp-triplestore')
+    testImplementation project(':camel-ldp-ldpath')
+    testImplementation project(':camel-ldp-elasticsearch')
+
     testCompile project(':camel-ldp-karaf')
 
     testCompile group: 'org.apache.karaf.features', name: 'standard', version: karafVersion, classifier:'features', ext: 'xml'
 
-    testRuntime("org.junit.vintage:junit-vintage-engine:${junitVersion}")
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$junitVersion"
 
     karafDistro group: 'org.apache.karaf', name: 'apache-karaf', version: karafVersion, ext: 'zip'
 }
