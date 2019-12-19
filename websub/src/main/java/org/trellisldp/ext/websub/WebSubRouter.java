@@ -18,7 +18,7 @@ import static org.apache.camel.Exchange.HTTP_METHOD;
 import static org.apache.camel.Exchange.HTTP_URI;
 import static org.apache.camel.builder.PredicateBuilder.and;
 import static org.apache.camel.builder.PredicateBuilder.not;
-import static org.apache.camel.component.http4.HttpMethods.POST;
+import static org.apache.camel.component.http.HttpMethods.POST;
 import static org.apache.camel.model.dataformat.JsonLibrary.Jackson;
 import static org.trellisldp.camel.ActivityStreamProcessor.ACTIVITY_STREAM_OBJECT_ID;
 import static org.trellisldp.camel.ActivityStreamProcessor.ACTIVITY_STREAM_TYPE;
@@ -44,6 +44,6 @@ public class WebSubRouter extends RouteBuilder {
                 .setHeader(HTTP_METHOD).constant(POST)
                 .setHeader(CONTENT_TYPE).constant("application/x-www-form-urlencoded")
                 .transform().simple("hub.mode=\"publish\"&hub.url=${header.ActivityStreamObjectId}")
-                .to("http4://localhost?useSystemProperties=true");
+                .to("http://localhost?useSystemProperties=true");
     }
 }

@@ -69,11 +69,8 @@ public class LDPathRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testQuery() throws Exception {
-        context.getRouteDefinition("TrellisLDPathQuery").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisLDPathQuery", builder -> {
+            builder.weaveAddLast().to("mock:results");
         });
         context.start();
 

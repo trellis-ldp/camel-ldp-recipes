@@ -16,7 +16,7 @@ package org.trellisldp.ext.websub;
 import static org.apache.camel.Exchange.CONTENT_TYPE;
 import static org.apache.camel.Exchange.HTTP_METHOD;
 import static org.apache.camel.Exchange.HTTP_URI;
-import static org.apache.camel.component.http4.HttpMethods.POST;
+import static org.apache.camel.component.http.HttpMethods.POST;
 import static org.apache.camel.util.ObjectHelper.loadResourceAsStream;
 import static org.junit.Assert.assertEquals;
 
@@ -63,12 +63,9 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testUpdate() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisWebSubRouter", builder -> {
+            builder.weaveAddLast().to("mock:results");
+            builder.mockEndpointsAndSkip("http*");
         });
         context.start();
 
@@ -87,12 +84,9 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testCreate() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisWebSubRouter", builder -> {
+            builder.weaveAddLast().to("mock:results");
+            builder.mockEndpointsAndSkip("http*");
         });
         context.start();
 
@@ -112,12 +106,9 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testDelete() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisWebSubRouter", builder -> {
+            builder.weaveAddLast().to("mock:results");
+            builder.mockEndpointsAndSkip("http*");
         });
         context.start();
 
@@ -130,12 +121,9 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testNotActivityMessage() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisWebSubRouter", builder -> {
+            builder.weaveAddLast().to("mock:results");
+            builder.mockEndpointsAndSkip("http*");
         });
         context.start();
 
@@ -148,12 +136,9 @@ public class WebSubRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testNotJson() throws Exception {
-        context.getRouteDefinition("TrellisWebSubRouter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisWebSubRouter", builder -> {
+            builder.weaveAddLast().to("mock:results");
+            builder.mockEndpointsAndSkip("http*");
         });
         context.start();
 

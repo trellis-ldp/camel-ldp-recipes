@@ -13,27 +13,30 @@ ext {
 
     /* Dependencies */
     marmottaVersion = '3.4.0'
-    camelVersion = '2.23.1'
-    camelLdpVersion = '0.1.1'
-    jenaVersion = '3.10.0'
-    javaxAnnotationsVersion = '1.3.2'
-    javaxInjectVersion = '2.5.0-b62'
+    camelVersion = '3.0.0'
+    camelLdpVersion = '0.2.0'
+    jenaVersion = '3.13.1'
     slf4jVersion = '1.7.26'
 
+    /* JavaEE */
+    activationApiVersion = '1.2.1'
+    annotationApiVersion = '1.3.5'
+    jaxbApiVersion = '2.3.2'
+    injectApiVersion = '1.0'
+
     /* Testing */
-    activationApiVersion = '1.2.0'
     apiguardianVersion = '1.0.0'
     checkstyleVersion = '8.18'
-    jaxbVersion = '2.3.0'
     jacocoVersion = '0.8.3'
+    jaxbRuntimeVersion = '2.3.2'
     junitPlatformVersion = '1.4.1'
     junitVersion = '5.4.1'
     logbackVersion = '1.2.3'
     mockitoVersion = '2.25.1'
 
     /* OSGi */
-    camelVersionRange = "[2.22,3)"
-    jenaVersionRange = "[3.8.0,4)"
+    camelVersionRange = "[3.0,4)"
+    jenaVersionRange = "[3.13,4)"
     karafVersion = '4.2.4'
     osgiVersion = '6.0.0'
     osgiCompendiumVersion = '5.0.0'

@@ -13,7 +13,7 @@
  */
 package org.trellisldp.ext.triplestore;
 
-import static org.apache.camel.util.ExchangeHelper.getMandatoryHeader;
+import static org.apache.camel.support.ExchangeHelper.getMandatoryHeader;
 import static org.trellisldp.camel.ActivityStreamProcessor.ACTIVITY_STREAM_OBJECT_ID;
 
 import java.io.UncheckedIOException;

@@ -8,18 +8,23 @@ ext {
 }
 
 dependencies {
-    api("org.apache.camel:camel-core:$camelVersion")
+    api enforcedPlatform("org.apache.camel:camel-bom:$camelVersion")
 
-    implementation("org.apache.camel:camel-blueprint:$camelVersion")
-    implementation("org.apache.camel:camel-http4:$camelVersion")
-    implementation("org.apache.camel:camel-jackson:$camelVersion")
-    implementation("org.slf4j:slf4j-api:$slf4jVersion")
-    implementation("org.trellisldp:camel-ldp:$camelLdpVersion")
+    api "org.apache.camel:camel-api"
 
-    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
-    testImplementation("javax.activation:javax.activation-api:$activationApiVersion")
-    testImplementation("javax.xml.bind:jaxb-api:$jaxbVersion")
-    testImplementation("org.apache.camel:camel-test-blueprint:$camelVersion")
+    implementation "org.apache.camel:camel-direct"
+    implementation "org.apache.camel:camel-seda"
+    implementation "org.apache.camel:camel-blueprint"
+    implementation "org.apache.camel:camel-http"
+    implementation "org.apache.camel:camel-jackson"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "org.trellisldp:camel-ldp:$camelLdpVersion"
+
+    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
+    testImplementation "jakarta.activation:jakarta.activation-api:$activationApiVersion"
+    testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
+    testImplementation "org.apache.camel:camel-test-blueprint"
+    testImplementation "org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion"
 }
 
 publishing.publications {

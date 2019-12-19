@@ -17,9 +17,9 @@ import static org.apache.camel.Exchange.CONTENT_TYPE;
 import static org.apache.camel.Exchange.HTTP_METHOD;
 import static org.apache.camel.Exchange.HTTP_QUERY;
 import static org.apache.camel.Exchange.HTTP_URI;
-import static org.apache.camel.component.http4.HttpMethods.DELETE;
-import static org.apache.camel.component.http4.HttpMethods.GET;
-import static org.apache.camel.component.http4.HttpMethods.PUT;
+import static org.apache.camel.component.http.HttpMethods.DELETE;
+import static org.apache.camel.component.http.HttpMethods.GET;
+import static org.apache.camel.component.http.HttpMethods.PUT;
 import static org.apache.camel.util.ObjectHelper.loadResourceAsStream;
 
 import java.util.Properties;
@@ -67,23 +67,17 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testUpdate() throws Exception {
-        context.getRouteDefinition("TrellisLdpathFormatter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                mockEndpointsAndSkip("http*");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisLdpathFormatter", builder -> {
+            builder.mockEndpointsAndSkip("http*");
         });
-        context.getRouteDefinition("TrellisElasticsearchUpdater").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisElasticsearchUpdater", builder -> {
+            builder.weaveAddLast().to("mock:results");
+            builder.mockEndpointsAndSkip("http*");
         });
         context.start();
 
-        getMockEndpoint("mock:http4:localhost").expectedMessageCount(2);
-        getMockEndpoint("mock:http4:localhost").expectedHeaderValuesReceivedInAnyOrder(
+        getMockEndpoint("mock:http:localhost").expectedMessageCount(2);
+        getMockEndpoint("mock:http:localhost").expectedHeaderValuesReceivedInAnyOrder(
                 HTTP_METHOD, GET, PUT);
 
         resultEndpoint.expectedMessageCount(1);
@@ -99,13 +93,10 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testFetch() throws Exception {
-        context.getRouteDefinition("TrellisLdpathFormatter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                mockEndpointsAndSkip("http*");
-                mockEndpointsAndSkip("direct:update.elasticsearch");
-                weaveAddLast().to("mock:results");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisLdpathFormatter", builder -> {
+            builder.mockEndpointsAndSkip("http*");
+            builder.mockEndpointsAndSkip("direct:update.elasticsearch");
+            builder.weaveAddLast().to("mock:results");
         });
         context.start();
 
@@ -123,16 +114,13 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testDelete() throws Exception {
-        context.getRouteDefinition("TrellisElasticsearchDeleter").adviceWith(context, new AdviceWithRouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                weaveAddLast().to("mock:results");
-                mockEndpointsAndSkip("http*");
-            }
+        AdviceWithRouteBuilder.adviceWith(context, "TrellisElasticsearchDeleter", builder -> {
+            builder.weaveAddLast().to("mock:results");
+            builder.mockEndpointsAndSkip("http*");
         });
         context.start();
 
-        getMockEndpoint("mock:http4:localhost").expectedMessageCount(1);
+        getMockEndpoint("mock:http:localhost").expectedMessageCount(1);
 
         resultEndpoint.expectedMessageCount(1);
         resultEndpoint.expectedHeaderReceived(HTTP_URI,

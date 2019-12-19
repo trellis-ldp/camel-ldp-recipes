@@ -20,9 +20,9 @@ import static org.apache.camel.Exchange.HTTP_QUERY;
 import static org.apache.camel.Exchange.HTTP_URI;
 import static org.apache.camel.LoggingLevel.INFO;
 import static org.apache.camel.builder.PredicateBuilder.and;
-import static org.apache.camel.component.http4.HttpMethods.DELETE;
-import static org.apache.camel.component.http4.HttpMethods.GET;
-import static org.apache.camel.component.http4.HttpMethods.PUT;
+import static org.apache.camel.component.http.HttpMethods.DELETE;
+import static org.apache.camel.component.http.HttpMethods.GET;
+import static org.apache.camel.component.http.HttpMethods.PUT;
 import static org.apache.camel.model.dataformat.JsonLibrary.Jackson;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.trellisldp.camel.ActivityStreamProcessor.ACTIVITY_STREAM_OBJECT_ID;
@@ -38,7 +38,7 @@ import org.trellisldp.camel.ActivityStreamProcessor;
 public class ElasticsearchRouter extends RouteBuilder {
 
     private static final Logger LOGGER = getLogger(ElasticsearchRouter.class);
-    private static final String HTTP_ENDPOINT = "http4://localhost?useSystemProperties=true";
+    private static final String HTTP_ENDPOINT = "http://localhost?useSystemProperties=true";
     private static final String CAMEL_HTTP_HEADERS = "CamelHttp*";
 
     @Override
