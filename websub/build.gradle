@@ -12,16 +12,18 @@ dependencies {
 
     api "org.apache.camel:camel-api"
 
+    implementation "org.apache.camel:camel-seda"
     implementation "org.apache.camel:camel-blueprint"
     implementation "org.apache.camel:camel-http"
     implementation "org.apache.camel:camel-jackson"
     implementation "org.slf4j:slf4j-api:$slf4jVersion"
     implementation "org.trellisldp:camel-ldp:$camelLdpVersion"
 
+    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
     testImplementation "jakarta.activation:jakarta.activation-api:$activationApiVersion"
     testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
     testImplementation "org.apache.camel:camel-test-blueprint"
-    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
+    testImplementation "org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion"
 }
 
 publishing.publications {

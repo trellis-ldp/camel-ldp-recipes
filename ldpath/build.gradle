@@ -13,6 +13,7 @@ dependencies {
     api "org.apache.camel:camel-api"
 
     implementation "org.apache.camel:camel-blueprint"
+    implementation "org.apache.camel:camel-direct"
     implementation "org.apache.camel:camel-http"
     implementation "org.apache.camel:camel-jackson"
     implementation "org.apache.camel:camel-jetty"
@@ -27,11 +28,12 @@ dependencies {
     implementation "org.apache.marmotta:ldpath-core:$marmottaVersion"
     implementation "org.slf4j:slf4j-api:$slf4jVersion"
 
+    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
     testImplementation "jakarta.activation:jakarta.activation-api:$activationApiVersion"
     testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
     testImplementation "org.apache.camel:camel-test-blueprint"
+    testImplementation "org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
-    testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
 }
 
 publishing.publications {
