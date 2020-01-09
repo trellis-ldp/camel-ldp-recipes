@@ -1,3 +1,7 @@
+plugins {
+    id "com.gradle.enterprise" version "3.1.1"
+}
+
 rootProject.name = 'camel-ldp-recipes'
 include ':camel-ldp-elasticsearch'
 include ':camel-ldp-ldpath'

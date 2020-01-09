@@ -2,7 +2,6 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.21.0'
     id 'com.github.hierynomus.license' version '0.15.0'
     id 'com.github.kt3k.coveralls' version '2.8.2'
-    id 'com.gradle.build-scan' version '2.2.1'
     id 'net.researchgate.release' version '2.7.0'
     id 'org.owasp.dependencycheck' version '4.0.2'
     id 'org.sonarqube' version '2.7'
@@ -250,6 +249,10 @@ subprojects { subproj ->
     signing {
         required { !version.toString().endsWith('-SNAPSHOT') && gradle.taskGraph.hasTask("publish") }
         sign publishing.publications
+    }
+
+    tasks.withType(Sign) {
+        onlyIf { !version.endsWith("SNAPSHOT") }
     }
 
     task docs(type: Javadoc) {
