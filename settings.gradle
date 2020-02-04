@@ -10,9 +10,9 @@ include ':camel-ldp-websub'
 include ':camel-ldp-karaf'
 include ':camel-ldp-osgi'
 
-project(':camel-ldp-elasticsearch').projectDir = "$rootDir/elasticsearch" as File
-project(':camel-ldp-ldpath').projectDir = "$rootDir/ldpath" as File
-project(':camel-ldp-triplestore').projectDir = "$rootDir/triplestore" as File
-project(':camel-ldp-websub').projectDir = "$rootDir/websub" as File
-project(':camel-ldp-karaf').projectDir = "$rootDir/karaf" as File
-project(':camel-ldp-osgi').projectDir = "$rootDir/osgi" as File
+project(':camel-ldp-elasticsearch').projectDir = new File(rootDir, "elasticsearch")
+project(':camel-ldp-ldpath').projectDir = new File(rootDir, "ldpath")
+project(':camel-ldp-triplestore').projectDir = new File(rootDir, "triplestore")
+project(':camel-ldp-websub').projectDir = new File(rootDir, "websub")
+project(':camel-ldp-karaf').projectDir = new File(rootDir, "karaf")
+project(':camel-ldp-osgi').projectDir = new File(rootDir, "osgi")
