@@ -8,16 +8,17 @@ ext {
 }
 
 dependencies {
-    api enforcedPlatform("org.apache.camel:camel-bom:$camelVersion")
+    api platform("org.apache.camel:camel-bom:$camelVersion")
+    implementation platform("org.apache.camel.karaf:camel-karaf-bom:$camelVersion")
 
     api "org.apache.camel:camel-api"
 
     implementation "org.apache.camel:camel-direct"
     implementation "org.apache.camel:camel-seda"
-    implementation "org.apache.camel:camel-blueprint"
     implementation "org.apache.camel:camel-http"
     implementation "org.apache.camel:camel-jackson"
     implementation "org.apache.camel:camel-support"
+    implementation "org.apache.camel.karaf:camel-blueprint"
     implementation "org.apache.jena:jena-osgi:$jenaVersion"
     implementation "org.slf4j:slf4j-api:$slf4jVersion"
     implementation "org.trellisldp:camel-ldp:$camelLdpVersion"
@@ -25,7 +26,7 @@ dependencies {
     testImplementation "ch.qos.logback:logback-classic:$logbackVersion"
     testImplementation "jakarta.activation:jakarta.activation-api:$activationApiVersion"
     testImplementation "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
-    testImplementation "org.apache.camel:camel-test-blueprint"
+    testImplementation "org.apache.camel.karaf:camel-test-blueprint"
     testImplementation "org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion"
 }
 
