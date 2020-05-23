@@ -14,7 +14,7 @@ ext {
     marmottaVersion = '3.4.0'
     camelVersion = '3.3.0'
     camelLdpVersion = '0.2.1'
-    jenaVersion = '3.14.0'
+    jenaVersion = '3.15.0'
     slf4jVersion = '1.7.30'
 
     /* JavaEE */
