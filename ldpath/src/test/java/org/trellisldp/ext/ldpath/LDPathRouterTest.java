@@ -34,7 +34,7 @@ import org.apache.camel.test.AvailablePortFinder;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.junit.Test;
 
-public class LDPathRouterTest extends CamelBlueprintTestSupport {
+class LDPathRouterTest extends CamelBlueprintTestSupport {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final int TEST_PORT = AvailablePortFinder.getNextAvailable();
@@ -68,7 +68,7 @@ public class LDPathRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testQuery() throws Exception {
+    void testQuery() throws Exception {
         AdviceWithRouteBuilder.adviceWith(context, "TrellisLDPathQuery", builder -> {
             builder.weaveAddLast().to("mock:results");
         });

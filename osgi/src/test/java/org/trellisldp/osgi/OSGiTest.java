@@ -49,7 +49,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
-public class OSGiTest {
+class OSGiTest {
 
     @Inject
     protected FeaturesService featuresService;
@@ -58,7 +58,7 @@ public class OSGiTest {
     protected BundleContext bundleContext;
 
     @Configuration
-    public Option[] config() {
+    Option[] config() {
         final ConfigurationManager cm = new ConfigurationManager();
         final String rmiRegistryPort = cm.getProperty("karaf.rmiRegistry.port");
         final String rmiServerPort = cm.getProperty("karaf.rmiServer.port");
@@ -94,7 +94,7 @@ public class OSGiTest {
     }
 
     @Test
-    public void testWebSubInstallation() throws Exception {
+    void testWebSubInstallation() throws Exception {
         assertFalse("camel-ldp-websub already installed!",
                 featuresService.isInstalled(featuresService.getFeature("camel-ldp-websub")));
         featuresService.installFeature("camel-ldp-websub");
@@ -106,7 +106,7 @@ public class OSGiTest {
     }
 
     @Test
-    public void testLDPathInstallation() throws Exception {
+    void testLDPathInstallation() throws Exception {
         assertFalse("camel-ldp-ldpath already installed!",
                 featuresService.isInstalled(featuresService.getFeature("camel-ldp-ldpath")));
         featuresService.installFeature("camel-ldp-ldpath");
@@ -118,7 +118,7 @@ public class OSGiTest {
     }
 
     @Test
-    public void testTriplestoreInstallation() throws Exception {
+    void testTriplestoreInstallation() throws Exception {
         assertFalse("camel-ldp-triplestore already installed!",
                 featuresService.isInstalled(featuresService.getFeature("camel-ldp-triplestore")));
         featuresService.installFeature("camel-ldp-triplestore");
@@ -130,7 +130,7 @@ public class OSGiTest {
     }
 
     @Test
-    public void testElasticSearchInstallation() throws Exception {
+    void testElasticSearchInstallation() throws Exception {
         assertFalse("camel-ldp-elasticsearch already installed!",
                 featuresService.isInstalled(featuresService.getFeature("camel-ldp-elasticsearch")));
         featuresService.installFeature("camel-ldp-elasticsearch");

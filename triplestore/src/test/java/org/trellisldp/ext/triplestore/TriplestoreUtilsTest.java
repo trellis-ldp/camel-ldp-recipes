@@ -19,20 +19,20 @@ import java.io.UncheckedIOException;
 
 import org.junit.Test;
 
-public class TriplestoreUtilsTest {
+class TriplestoreUtilsTest {
 
     @Test
-    public void testEncode() {
+    void testEncode() {
         assertEquals("", TriplestoreUtils.encode(null, "foo"));
     }
 
     @Test(expected = UncheckedIOException.class)
-    public void testNonexistentEncoding() {
+    void testNonexistentEncoding() {
         TriplestoreUtils.encode("a value", "non-existent-encoding");
     }
 
     @Test
-    public void testEncodeRealValue() {
+    void testEncodeRealValue() {
         assertEquals("a+value+with+spaces", TriplestoreUtils.encode("a value with spaces", "UTF-8"));
     }
 }

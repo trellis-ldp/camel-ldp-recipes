@@ -34,7 +34,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.junit.Test;
 
-public class TriplestoreRouterTest extends CamelBlueprintTestSupport {
+class TriplestoreRouterTest extends CamelBlueprintTestSupport {
 
     @EndpointInject(uri = "mock:results")
     protected MockEndpoint resultEndpoint;
@@ -66,7 +66,7 @@ public class TriplestoreRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    void testUpdate() throws Exception {
         AdviceWithRouteBuilder.adviceWith(context, "TrellisTriplestoreUpdater", builder -> {
             builder.weaveAddLast().to("mock:results");
             builder.mockEndpointsAndSkip("http*");
@@ -95,7 +95,7 @@ public class TriplestoreRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    void testDelete() throws Exception {
         AdviceWithRouteBuilder.adviceWith(context, "TrellisTriplestoreDeleter", builder -> {
             builder.weaveAddLast().to("mock:results");
             builder.mockEndpointsAndSkip("http*");
@@ -117,7 +117,7 @@ public class TriplestoreRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testNotActivityMessage() throws Exception {
+    void testNotActivityMessage() throws Exception {
         context.start();
 
         resultEndpoint.expectedMessageCount(0);
@@ -128,7 +128,7 @@ public class TriplestoreRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testNotJson() throws Exception {
+    void testNotJson() throws Exception {
         context.start();
 
         resultEndpoint.expectedMessageCount(0);

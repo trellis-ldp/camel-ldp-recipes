@@ -32,7 +32,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.junit.Test;
 
-public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
+class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
 
     @EndpointInject(uri = "mock:results")
     protected MockEndpoint resultEndpoint;
@@ -66,7 +66,7 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    void testUpdate() throws Exception {
         AdviceWithRouteBuilder.adviceWith(context, "TrellisLdpathFormatter", builder -> {
             builder.mockEndpointsAndSkip("http*");
         });
@@ -92,7 +92,7 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testFetch() throws Exception {
+    void testFetch() throws Exception {
         AdviceWithRouteBuilder.adviceWith(context, "TrellisLdpathFormatter", builder -> {
             builder.mockEndpointsAndSkip("http*");
             builder.mockEndpointsAndSkip("direct:update.elasticsearch");
@@ -113,7 +113,7 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    void testDelete() throws Exception {
         AdviceWithRouteBuilder.adviceWith(context, "TrellisElasticsearchDeleter", builder -> {
             builder.weaveAddLast().to("mock:results");
             builder.mockEndpointsAndSkip("http*");
@@ -133,7 +133,7 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testNotActivityMessage() throws Exception {
+    void testNotActivityMessage() throws Exception {
         context.start();
 
         resultEndpoint.expectedMessageCount(0);
@@ -144,7 +144,7 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
     }
 
     @Test
-    public void testNotJson() throws Exception {
+    void testNotJson() throws Exception {
         context.start();
 
         resultEndpoint.expectedMessageCount(0);
