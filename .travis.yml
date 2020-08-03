@@ -20,7 +20,7 @@ cache:
 
 branches:
   only:
-    - master
+    - main
     # release tags
     - /^camel-ldp-recipes-\d+\.\d+\.\d+$/
     # maintenance branches
@@ -60,6 +60,6 @@ jobs:
           stage: deploy
           jdk: openjdk8
           env: JOB=sonatype
-          if: branch = master AND type = push
+          if: branch = main AND type = push
           # Only automate the publication of SNAPSHOTS
           script: if [[ $(./gradlew -q getVersion) == *SNAPSHOT* ]]; then ./gradlew publish ; fi
