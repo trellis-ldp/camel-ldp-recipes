@@ -274,8 +274,8 @@ subprojects { subproj ->
     }
 
     sonarqube {
-        // Run only with java8
-        skipProject = ! JavaVersion.current().isJava8()
+        // Run only with java11
+        skipProject = ! JavaVersion.current().isJava11()
     }
 
     test {
