@@ -46,15 +46,15 @@ jobs:
         - name: "Java 8"
           stage: test
           jdk: openjdk8
-          script: ./gradlew check install jacocoRootReport --scan
-          after_success: ./gradlew coveralls sonarqube
+          script: ./gradlew check install
 
         # JDK 11
         - name: "Java 11"
           stage: test
           jdk: openjdk11
           dist: xenial
-          script: ./gradlew check install
+          script: ./gradlew check install jacocoRootReport
+          after_success: ./gradlew coveralls sonarqube
 
         - name: "Publish to Sonatype"
           stage: deploy
