@@ -42,12 +42,6 @@ jobs:
       - env: JOB=sonatype
 
     include:
-        # JDK 8
-        - name: "Java 8"
-          stage: test
-          jdk: openjdk8
-          script: ./gradlew check install
-
         # JDK 11
         - name: "Java 11"
           stage: test
@@ -58,7 +52,7 @@ jobs:
 
         - name: "Publish to Sonatype"
           stage: deploy
-          jdk: openjdk8
+          jdk: openjdk11
           env: JOB=sonatype
           if: branch = main AND type = push
           # Only automate the publication of SNAPSHOTS
