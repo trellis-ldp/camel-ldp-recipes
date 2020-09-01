@@ -48,7 +48,7 @@ jobs:
           jdk: openjdk11
           dist: xenial
           script: ./gradlew check install jacocoRootReport
-          after_success: ./gradlew coveralls sonarqube -Djdk.tls.client.protocols="TLSv1.2"
+          after_success: ./gradlew sonarqube coveralls
 
         - name: "Publish to Sonatype"
           stage: deploy
