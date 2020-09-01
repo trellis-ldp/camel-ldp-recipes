@@ -50,12 +50,6 @@ jobs:
           script: ./gradlew check install jacocoRootReport
           after_success: ./gradlew coveralls sonarqube
 
-        # JDK 14
-        - name: "Java 14"
-          stage: test
-          jdk: openjdk14
-          script: ./gradlew check install
-
         - name: "Publish to Sonatype"
           stage: deploy
           jdk: openjdk11
