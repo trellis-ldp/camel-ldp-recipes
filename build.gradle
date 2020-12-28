@@ -24,7 +24,7 @@ ext {
     injectApiVersion = '1.0'
 
     /* Testing */
-    apiguardianVersion = '1.1.0'
+    apiguardianVersion = '1.1.1'
     checkstyleVersion = '8.18'
     jacocoVersion = '0.8.3'
     jaxbRuntimeVersion = '2.3.3'
