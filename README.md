@@ -2,8 +2,8 @@
 
 The projects in this repository make use of [Apache Camel 3.x](https://camel.apache.org) as an integration framework.
 
-[![Build Status](https://travis-ci.com/trellis-ldp/camel-ldp-recipes.svg?branch=main)](https://travis-ci.com/trellis-ldp/camel-ldp-recipes)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.trellisldp.ext/camel-ldp-karaf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.trellisldp.ext/camel-ldp-karaf/)
+![GitHub CI](https://github.com/trellis-ldp/camel-ldp-recipes/workflows/GitHub%20CI/badge.svg)
+![Maven Central](https://img.shields.io/maven-central/v/org.trellisldp.ext/camel-ldp-karaf.svg)
 
 The current integrations include:
 
