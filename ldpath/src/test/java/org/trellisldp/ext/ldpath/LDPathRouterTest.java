@@ -30,7 +30,7 @@ import java.util.Properties;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.AdviceWithRouteBuilder;
+import org.apache.camel.builder.AdviceWith;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.AvailablePortFinder;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
@@ -71,7 +71,7 @@ public class LDPathRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testQuery() throws Exception {
-        AdviceWithRouteBuilder.adviceWith(context, "TrellisLDPathQuery", builder -> {
+        AdviceWith.adviceWith(context, "TrellisLDPathQuery", builder -> {
             builder.weaveAddLast().to("mock:results");
         });
         context.start();

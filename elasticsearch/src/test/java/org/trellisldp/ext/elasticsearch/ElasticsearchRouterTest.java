@@ -29,7 +29,7 @@ import java.util.Properties;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.AdviceWithRouteBuilder;
+import org.apache.camel.builder.AdviceWith;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.junit.Test;
@@ -69,10 +69,10 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testUpdate() throws Exception {
-        AdviceWithRouteBuilder.adviceWith(context, "TrellisLdpathFormatter", builder -> {
+        AdviceWith.adviceWith(context, "TrellisLdpathFormatter", builder -> {
             builder.mockEndpointsAndSkip("http*");
         });
-        AdviceWithRouteBuilder.adviceWith(context, "TrellisElasticsearchUpdater", builder -> {
+        AdviceWith.adviceWith(context, "TrellisElasticsearchUpdater", builder -> {
             builder.weaveAddLast().to("mock:results");
             builder.mockEndpointsAndSkip("http*");
         });
@@ -95,7 +95,7 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testFetch() throws Exception {
-        AdviceWithRouteBuilder.adviceWith(context, "TrellisLdpathFormatter", builder -> {
+        AdviceWith.adviceWith(context, "TrellisLdpathFormatter", builder -> {
             builder.mockEndpointsAndSkip("http*");
             builder.mockEndpointsAndSkip("direct:update.elasticsearch");
             builder.weaveAddLast().to("mock:results");
@@ -116,7 +116,7 @@ public class ElasticsearchRouterTest extends CamelBlueprintTestSupport {
 
     @Test
     public void testDelete() throws Exception {
-        AdviceWithRouteBuilder.adviceWith(context, "TrellisElasticsearchDeleter", builder -> {
+        AdviceWith.adviceWith(context, "TrellisElasticsearchDeleter", builder -> {
             builder.weaveAddLast().to("mock:results");
             builder.mockEndpointsAndSkip("http*");
         });
