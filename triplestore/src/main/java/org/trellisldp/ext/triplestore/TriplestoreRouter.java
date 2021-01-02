@@ -59,7 +59,7 @@ public class TriplestoreRouter extends RouteBuilder {
             .process(new ActivityStreamProcessor())
             .filter(and(
                         header(ACTIVITY_STREAM_OBJECT_ID).isNotNull(),
-                        simple("'{{triplestore.url}}' regex '^https?://.+'")))
+                        simple("'${properties:triplestore.url}' regex '^https?://.+'")))
                 .choice()
                     .when(header(ACTIVITY_STREAM_TYPE).contains("Delete"))
                         .to(DELETE_FROM_TRIPLESTORE)
@@ -68,7 +68,7 @@ public class TriplestoreRouter extends RouteBuilder {
 
         from(DELETE_FROM_TRIPLESTORE).routeId("TrellisTriplestoreDeleter")
             .log(INFO, LOGGER, "Deleting ${headers.ActivityStreamObjectId} from triplestore")
-            .setHeader(HTTP_URI).simple("{{triplestore.url}}")
+            .setHeader(HTTP_URI).simple("${properties:triplestore.url}")
             .setHeader(HTTP_METHOD).constant(POST)
             .setHeader(CONTENT_TYPE).constant(CONTENT_TYPE_WWW_FORM_URLENCODED + CHARSET_UTF_8)
             .process(e -> e.getIn().setBody(sparqlUpdate(deleteAll(e))))
@@ -77,7 +77,7 @@ public class TriplestoreRouter extends RouteBuilder {
         from(FETCH_RESOURCE).routeId("TrellisResourceFetcher")
             .setHeader(HTTP_URI).header(ACTIVITY_STREAM_OBJECT_ID)
             .setHeader(HTTP_METHOD).constant(GET)
-            .setHeader(PREFER).constant("{{prefer.header}}")
+            .setHeader(PREFER).constant("${properties:prefer.header}")
             .setHeader(ACCEPT).constant(CONTENT_TYPE_N_TRIPLES)
             .to(HTTP_ENDPOINT)
             .to(UPDATE_TRIPLESTORE);
@@ -86,7 +86,7 @@ public class TriplestoreRouter extends RouteBuilder {
             .filter(header(CONTENT_TYPE).isEqualTo(CONTENT_TYPE_N_TRIPLES))
                 .log(INFO, LOGGER, "Updating ${headers.ActivityStreamObjectId} in triplestore")
                 .removeHeaders("CamelHttp*")
-                .setHeader(HTTP_URI).simple("{{triplestore.url}}")
+                .setHeader(HTTP_URI).simple("${properties:triplestore.url}")
                 .setHeader(HTTP_METHOD).constant(POST)
                 .setHeader(CONTENT_TYPE).constant(CONTENT_TYPE_WWW_FORM_URLENCODED + CHARSET_UTF_8)
                 .process(e -> e.getIn().setBody(sparqlUpdate(deleteAll(e) +

@@ -38,7 +38,7 @@ public class WebSubRouter extends RouteBuilder {
         from("{{input.stream}}").routeId("TrellisWebSubRouter")
             .unmarshal().json(Jackson)
             .process(new ActivityStreamProcessor())
-            .setHeader(HTTP_URI).simple("{{subscriber.url}}")
+            .setHeader(HTTP_URI).simple("${properties:subscriber.url}")
             .filter(and(
                         not(header(ACTIVITY_STREAM_TYPE).contains("Delete")),
                         header(ACTIVITY_STREAM_OBJECT_ID).isNotNull(),

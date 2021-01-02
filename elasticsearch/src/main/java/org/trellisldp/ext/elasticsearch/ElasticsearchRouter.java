@@ -50,8 +50,8 @@ public class ElasticsearchRouter extends RouteBuilder {
             .process(new ActivityStreamProcessor())
             .filter(and(
                         header(ACTIVITY_STREAM_OBJECT_ID).isNotNull(),
-                        simple("'{{ldpath.service.url}}' regex '^https?://.+'"),
-                        simple("'{{elasticsearch.url}}' regex '^https?://.+'")))
+                        simple("'${properties:ldpath.service.url}' regex '^https?://.+'"),
+                        simple("'${properties:elasticsearch.url}' regex '^https?://.+'")))
                 .process(e -> e.getIn().setHeader("ElasticSearchId",
                             encode(e.getIn().getHeader(ACTIVITY_STREAM_OBJECT_ID, String.class), "UTF-8")))
                 .choice()
@@ -63,22 +63,23 @@ public class ElasticsearchRouter extends RouteBuilder {
         from("direct:delete.elasticsearch").routeId("TrellisElasticsearchDeleter")
             .log(INFO, LOGGER, "Deleting ${headers.ActivityStreamObjectId} from elasticsearch")
             .removeHeaders(CAMEL_HTTP_HEADERS)
-            .setHeader(HTTP_URI).simple("{{elasticsearch.url}}${headers.ElasticSearchId}")
+            .setHeader(HTTP_URI).simple("${properties:elasticsearch.url}${headers.ElasticSearchId}")
             .setHeader(HTTP_METHOD).constant(DELETE)
             .to(HTTP_ENDPOINT);
 
         from("direct:fetch.resource").routeId("TrellisLdpathFormatter")
             .log(INFO, LOGGER, "Fetching resource via LDPath: ${headers.ActivityStreamObjectId}")
             .removeHeaders(CAMEL_HTTP_HEADERS)
-            .setHeader(HTTP_URI).simple("{{ldpath.service.url}}")
+            .setHeader(HTTP_URI).simple("${properties:ldpath.service.url}")
             .setHeader(HTTP_METHOD).constant(GET)
-            .setHeader(HTTP_QUERY).simple("url=${headers.ActivityStreamObjectId}&program={{ldpath.program.url}}")
+            .setHeader(HTTP_QUERY)
+                .simple("url=${headers.ActivityStreamObjectId}&program=${properties:ldpath.program.url}")
             .to(HTTP_ENDPOINT)
             .to("direct:update.elasticsearch");
 
         from("direct:update.elasticsearch").routeId("TrellisElasticsearchUpdater")
             .removeHeaders(CAMEL_HTTP_HEADERS)
-            .setHeader(HTTP_URI).simple("{{elasticsearch.url}}${headers.ElasticSearchId}")
+            .setHeader(HTTP_URI).simple("${properties:elasticsearch.url}${headers.ElasticSearchId}")
             .setHeader(HTTP_METHOD).constant(PUT)
             .setHeader(CONTENT_TYPE).constant("application/json")
             .to(HTTP_ENDPOINT);
