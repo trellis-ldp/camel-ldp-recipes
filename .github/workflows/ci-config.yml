@@ -1,0 +1,37 @@
+name: GitHub CI
+
+on:
+  push:
+    branches:
+      - main
+      - camel-ldp-recipes-[0-9]+.[0-9]+.x
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validation:
+    name: Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gradle/wrapper-validation-action@v1
+
+  build:
+    name: CI environment
+    needs: [validation]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Build with Gradle
+      run: ./gradlew build javadoc jacocoRootReport sonarqube -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=trellis-ldp
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
