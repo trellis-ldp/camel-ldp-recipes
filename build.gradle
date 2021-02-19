@@ -36,7 +36,7 @@ ext {
     camelVersionRange = "[3.0,4)"
     jenaVersionRange = "[3.13,4)"
     karafVersion = '4.3.0'
-    osgiVersion = '6.0.0'
+    osgiVersion = '8.0.0'
     osgiCompendiumVersion = '5.0.0'
     paxExamVersion = '4.13.4'
     projectOsgiVersion = project.version.replaceAll("-SNAPSHOT", ".SNAPSHOT")

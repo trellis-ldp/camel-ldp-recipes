@@ -19,7 +19,9 @@ dependencies {
     implementation "org.apache.camel:camel-jackson"
     implementation "org.apache.camel:camel-support"
     implementation "org.apache.camel.karaf:camel-blueprint"
-    implementation "org.apache.jena:jena-osgi:$jenaVersion"
+    implementation ("org.apache.jena:jena-osgi:$jenaVersion") {
+        exclude group: 'org.osgi', module: 'org.osgi.core'
+    }
     implementation "org.slf4j:slf4j-api:$slf4jVersion"
     implementation "org.trellisldp:camel-ldp:$camelLdpVersion"
 
