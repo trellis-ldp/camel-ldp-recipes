@@ -13,7 +13,7 @@ ext {
     marmottaVersion = '3.4.0'
     camelVersion = '3.9.0'
     camelLdpVersion = '0.2.1'
-    jenaVersion = '3.17.0'
+    jenaVersion = '4.0.0'
     slf4jVersion = '1.7.30'
 
     /* JavaEE */
@@ -34,7 +34,7 @@ ext {
 
     /* OSGi */
     camelVersionRange = "[3.0,4)"
-    jenaVersionRange = "[3.13,4)"
+    jenaVersionRange = "[3.13,5)"
     karafVersion = '4.3.1'
     osgiVersion = '8.0.0'
     osgiCompendiumVersion = '5.0.0'
