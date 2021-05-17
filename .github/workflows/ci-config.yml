@@ -31,8 +31,5 @@ jobs:
         java-version: 11
 
     - name: Build with Gradle
-      run: ./gradlew build javadoc jacocoRootReport sonarqube -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=trellis-ldp
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./gradlew build javadoc
 
