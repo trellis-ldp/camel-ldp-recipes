@@ -35,7 +35,7 @@ ext {
     /* OSGi */
     camelVersionRange = "[3.0,4)"
     jenaVersionRange = "[3.13,5)"
-    karafVersion = '4.3.1'
+    karafVersion = '4.3.2'
     osgiVersion = '8.0.0'
     osgiCompendiumVersion = '5.0.0'
     paxExamVersion = '4.13.4'
