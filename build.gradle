@@ -11,7 +11,7 @@ ext {
 
     /* Dependencies */
     marmottaVersion = '3.4.0'
-    camelVersion = '3.11.0'
+    camelVersion = '3.11.1'
     camelLdpVersion = '0.2.1'
     jenaVersion = '4.1.0'
     slf4jVersion = '1.7.32'
