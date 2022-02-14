@@ -17,7 +17,7 @@ ext {
     slf4jVersion = '1.7.35'
 
     /* JavaEE */
-    activationApiVersion = '1.2.2'
+    activationApiVersion = '2.1.0'
     annotationApiVersion = '1.3.5'
     jaxbApiVersion = '2.3.3'
     injectApiVersion = '1.0'
