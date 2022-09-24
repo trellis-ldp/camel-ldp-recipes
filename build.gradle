@@ -29,7 +29,7 @@ ext {
     jaxbRuntimeVersion = '2.3.3'
     junitPlatformVersion = '1.4.1'
     junitVersion = '5.9.1'
-    logbackVersion = '1.2.11'
+    logbackVersion = '1.4.1'
     mockitoVersion = '4.7.0'
 
     /* OSGi */
