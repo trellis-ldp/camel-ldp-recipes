@@ -28,7 +28,7 @@ ext {
     jacocoVersion = '0.8.3'
     jaxbRuntimeVersion = '2.3.3'
     junitPlatformVersion = '1.4.1'
-    junitVersion = '5.9.0'
+    junitVersion = '5.9.1'
     logbackVersion = '1.2.11'
     mockitoVersion = '4.7.0'
 
