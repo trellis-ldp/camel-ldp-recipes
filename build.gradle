@@ -14,7 +14,7 @@ ext {
     camelVersion = '3.21.1'
     camelLdpVersion = '0.2.1'
     jenaVersion = '4.1.0'
-    slf4jVersion = '2.0.7'
+    slf4jVersion = '2.0.9'
 
     /* JavaEE */
     activationApiVersion = '1.2.2'
