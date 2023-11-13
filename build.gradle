@@ -26,7 +26,7 @@ ext {
     apiguardianVersion = '1.1.2'
     checkstyleVersion = '8.18'
     jacocoVersion = '0.8.3'
-    jaxbRuntimeVersion = '2.3.3'
+    jaxbRuntimeVersion = '4.0.4'
     junitPlatformVersion = '1.4.1'
     junitVersion = '5.10.1'
     logbackVersion = '1.4.11'
