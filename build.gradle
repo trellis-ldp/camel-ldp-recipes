@@ -30,7 +30,7 @@ ext {
     junitPlatformVersion = '1.4.1'
     junitVersion = '5.11.3'
     logbackVersion = '1.5.12'
-    mockitoVersion = '5.14.2'
+    mockitoVersion = '5.15.2'
 
     /* OSGi */
     camelVersionRange = "[3.0,4)"
