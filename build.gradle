@@ -38,7 +38,7 @@ ext {
     karafVersion = '4.4.7'
     osgiVersion = '8.0.0'
     osgiCompendiumVersion = '5.0.0'
-    paxExamVersion = '4.13.5'
+    paxExamVersion = '4.14.0'
     projectOsgiVersion = project.version.replaceAll("-SNAPSHOT", ".SNAPSHOT")
 
     jacocoTestProjects = [
